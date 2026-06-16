@@ -31,3 +31,14 @@ build/
 .DS_Store
 *.log
 .claude-temp/
+
+# QAF framework (tooling, not app source)
+qubika-agentic-framework/
+
+.codex-temp/
+.claude-backups/
+.codex-backups/
+.mcp.json
+
+# QAF code graph (regenerable build artifact)
+.code-review-graph/

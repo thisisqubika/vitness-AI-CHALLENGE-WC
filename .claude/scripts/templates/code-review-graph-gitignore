@@ -1,0 +1,22 @@
+# Managed by ai-agentic-framework — overrides the tool's auto-generated `*`.
+#
+# The graph DB and per-developer state are intentionally NOT committed; the
+# lightweight metadata that lets every developer rebuild quickly IS committed.
+# See docs/CODE_GRAPH.md "Team onboarding" for the rationale.
+#
+# `launcher.json` is the ONLY allowlisted artefact:
+#   - It is byte-deterministic given the same code-review-graph version + the
+#     same `command`/`args` resolution on this machine, so the framework's
+#     compare-then-write logic emits no diff on most preflights.
+#   - Sharing it lets every developer's MCP launcher use the same tool
+#     resolution.
+#
+# `extraction-manifest.json` was previously allowlisted but is now excluded
+# (2026-05-05): the upstream tool stamps a `created_at` timestamp on every
+# build, so the file churns on every run regardless of whether the graph
+# content changed. Tracking it produced noisy diffs and merge conflicts.
+# `setup-code-graph.sh` automatically untracks any prior commit of this file
+# on the next preflight (see migration block at the end of the script).
+*
+!.gitignore
+!launcher.json

@@ -1,0 +1,130 @@
+{
+  "version": "1.0.0",
+  "schema_version": "1.0.0",
+  "framework_version": "1.0.0",
+  "stack_profile": {
+    "services": [
+      {
+        "id": "mobile",
+        "name": "mobile",
+        "path": "apps/mobile",
+        "type": "mobile",
+        "language": "typescript",
+        "language_version": "6.0.3",
+        "frameworks": {
+          "main": "Expo 56 + React Native 0.85"
+        },
+        "file_count": 17,
+        "manifest_file": "apps/mobile/package.json"
+      },
+      {
+        "id": "shared",
+        "name": "@vitness/shared",
+        "path": "packages/shared",
+        "type": "library",
+        "language": "typescript",
+        "language_version": "6.0.3",
+        "frameworks": {
+          "main": "zod 4"
+        },
+        "file_count": 3,
+        "manifest_file": "packages/shared/package.json"
+      },
+      {
+        "id": "supabase",
+        "name": "supabase",
+        "path": "supabase",
+        "type": "serverless",
+        "language": "typescript",
+        "frameworks": {
+          "main": "Supabase Edge Functions (Deno)"
+        },
+        "environment": {
+          "port": 54321
+        },
+        "file_count": 8
+      }
+    ],
+    "is_monorepo": true,
+    "workspace_tool": "pnpm workspaces",
+    "package_manager": "pnpm",
+    "file_counts": {
+      "total": 30,
+      "by_language": {
+        "typescript": 25,
+        "css": 2,
+        "sql": 2,
+        "javascript": 1
+      }
+    },
+    "automation": {
+      "makefiles": [],
+      "justfiles": [],
+      "taskfiles": [],
+      "shell_scripts": [],
+      "ci_hints": []
+    },
+    "readme_run_sections": [
+      {
+        "path": "README.md",
+        "heading": "Develop",
+        "body": "```bash\npnpm install\npnpm mobile           # start Expo\nsupabase start        # local Postgres + auth + realtime + edge functions\nsupabase db reset     # apply migrations to the local db\n```",
+        "fenced_blocks": [
+          "pnpm install\npnpm mobile           # start Expo\nsupabase start        # local Postgres + auth + realtime + edge functions\nsupabase db reset     # apply migrations to the local db"
+        ]
+      }
+    ],
+    "command_catalog": {
+      "setup": [
+        {
+          "tier": "readme",
+          "command": "pnpm install",
+          "description": "From README.md § Develop",
+          "source": "README.md#develop"
+        }
+      ],
+      "start_dev": [
+        {
+          "tier": "readme",
+          "command": "pnpm mobile           # start Expo",
+          "description": "From README.md § Develop",
+          "source": "README.md#develop"
+        },
+        {
+          "tier": "package_manager",
+          "command": "pnpm --filter mobile start",
+          "source": "documented_commands(package_json)",
+          "per_service": "_root"
+        }
+      ],
+      "run_tests": [
+        {
+          "tier": "package_manager",
+          "command": "pnpm -r test",
+          "source": "documented_commands(package_json)",
+          "per_service": "_root"
+        }
+      ],
+      "run_lint": [
+        {
+          "tier": "package_manager",
+          "command": "pnpm -r lint",
+          "source": "documented_commands(package_json)",
+          "per_service": "_root"
+        }
+      ],
+      "run_typecheck": [
+        {
+          "tier": "package_manager",
+          "command": "pnpm -r typecheck",
+          "source": "documented_commands(package_json)",
+          "per_service": "_root"
+        }
+      ]
+    }
+  },
+  "resource_state": {
+    "skills": {},
+    "agents": {}
+  }
+}
