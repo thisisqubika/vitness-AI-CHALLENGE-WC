@@ -9,6 +9,10 @@ language plpgsql
 security definer
 set search_path = public
 as $$
+-- All locals are v_-prefixed, so any bare name that could be a column or an OUT
+-- parameter (e.g. sticker_id in the ON CONFLICT target below) resolves to the
+-- column, not the RETURNS TABLE output variable.
+#variable_conflict use_column
 declare
   v_profile uuid := auth.uid();
   v_match_id text;
