@@ -68,6 +68,17 @@ finished). Re-running is idempotent.
 
 Recorded-match fixtures live in [`supabase/seed/replay/`](supabase/seed/replay/).
 
+### Jugada reconstructions
+
+Tapping a goal in the match room opens its 2D play reconstruction — players and
+the ball animated across the pitch from a `PlayScript`. The renderer
+([`jugada-pitch`](apps/mobile/src/components/jugada/)) uses `react-native-svg`
+(renders the same on web + native); interpolation is the pure `samplePlay`
+helper in `@vitness/shared`. Demo play-scripts are hand-authored in
+[`apps/mobile/src/data/demo-jugadas.ts`](apps/mobile/src/data/demo-jugadas.ts)
+pending the `compose-play` pipeline, which will write the same shape to the
+`jugadas` table.
+
 ### Run the app against the replay
 
 ```bash

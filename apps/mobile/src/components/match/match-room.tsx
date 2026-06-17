@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import type { Match, MatchEvent } from "@vitness/shared";
 
@@ -6,6 +7,8 @@ import { ThemedView } from "@/components/themed-view";
 import { Spacing } from "@/constants/theme";
 import { useTheme } from "@/hooks/use-theme";
 import { useMatchRoom } from "@/hooks/use-match-room";
+import { JugadaPitch } from "@/components/jugada/jugada-pitch";
+import { demoJugadaFor } from "@/data/demo-jugadas";
 import { eventLabel } from "./event-label";
 import { MomentumBar } from "./momentum-bar";
 
@@ -29,9 +32,18 @@ function teamName(match: Match, side: "home" | "away"): string {
   return side === "home" ? match.homeTeam : match.awayTeam;
 }
 
-function EventRow({ match, event }: { match: Match; event: MatchEvent }) {
+function EventRow({
+  match,
+  event,
+  onPress,
+}: {
+  match: Match;
+  event: MatchEvent;
+  onPress?: () => void;
+}) {
   const { icon, text } = eventLabel(event);
   const side = teamName(match, event.team);
+  const tappable = event.type === "goal" && onPress !== undefined;
   return (
     <View style={styles.eventRow}>
       <ThemedText type="small" themeColor="textSecondary" style={styles.eventMinute}>
@@ -43,6 +55,11 @@ function EventRow({ match, event }: { match: Match; event: MatchEvent }) {
       <ThemedText type="small">
         {text} · {side}
       </ThemedText>
+      {tappable ? (
+        <ThemedText type="link" style={styles.watch} onPress={onPress}>
+          ▶ Watch
+        </ThemedText>
+      ) : null}
     </View>
   );
 }
@@ -50,6 +67,7 @@ function EventRow({ match, event }: { match: Match; event: MatchEvent }) {
 export function MatchRoom({ matchId, onBack }: { matchId: string; onBack: () => void }) {
   const theme = useTheme();
   const { match, events, score, minute, loading, error } = useMatchRoom(matchId);
+  const [openGoal, setOpenGoal] = useState<MatchEvent | null>(null);
 
   if (error) {
     return (
@@ -132,13 +150,44 @@ export function MatchRoom({ matchId, onBack }: { matchId: string; onBack: () => 
             <View
               key={`${event.providerEventId}-${i}`}
               style={[styles.eventWrap, { borderBottomColor: theme.backgroundElement }]}>
-              <EventRow match={match} event={event} />
+              <EventRow match={match} event={event} onPress={() => setOpenGoal(event)} />
             </View>
           ))}
         </ScrollView>
       )}
+
+      {openGoal ? <JugadaOverlay match={match} goal={openGoal} onClose={() => setOpenGoal(null)} /> : null}
     </View>
   );
+}
+
+function JugadaOverlay({
+  match,
+  goal,
+  onClose,
+}: {
+  match: Match;
+  goal: MatchEvent;
+  onClose: () => void;
+}) {
+  const script = demoJugadaFor(goal.providerEventId);
+  const title = `${goal.minute}' Goal — ${teamName(match, goal.team)}`;
+  if (!script) {
+    return (
+      <View style={styles.fallback}>
+        <ThemedView type="backgroundElement" style={styles.fallbackCard}>
+          <ThemedText type="default">{title}</ThemedText>
+          <ThemedText type="small" themeColor="textSecondary">
+            Reconstruction not available yet.
+          </ThemedText>
+          <Pressable onPress={onClose} hitSlop={Spacing.two}>
+            <ThemedText type="link">Close</ThemedText>
+          </Pressable>
+        </ThemedView>
+      </View>
+    );
+  }
+  return <JugadaPitch script={script} title={title} onClose={onClose} />;
 }
 
 const styles = StyleSheet.create({
@@ -157,4 +206,17 @@ const styles = StyleSheet.create({
   eventRow: { flexDirection: "row", alignItems: "center", gap: Spacing.two },
   eventMinute: { width: 28 },
   eventIcon: { width: 22, textAlign: "center" },
+  watch: { marginLeft: "auto" },
+  fallback: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: Spacing.three,
+  },
+  fallbackCard: { borderRadius: Spacing.three, padding: Spacing.four, gap: Spacing.two, alignItems: "center" },
 });

@@ -4,5 +4,6 @@ export * from "./match.ts";
 export * from "./match-event.ts";
 export * from "./match-data-provider.ts";
 export * from "./replay-clock.ts";
+export * from "./play-sampler.ts";
 export * from "./providers/static-json-provider.ts";
 export * from "./providers/replay-provider.ts";
