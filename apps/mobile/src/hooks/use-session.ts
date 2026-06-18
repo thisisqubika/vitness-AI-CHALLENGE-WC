@@ -22,8 +22,12 @@ export function useSession(): SessionState {
   useEffect(() => {
     let active = true;
 
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, next) => {
-      if (active) setSession(next);
+    const { data: sub } = supabase.auth.onAuthStateChange((event, next) => {
+      if (!active) return;
+      setSession(next);
+      // If the session is lost (e.g. the anonymous user expired or the backend
+      // was reset), re-establish one so the app doesn't get stuck unauthenticated.
+      if (event === "SIGNED_OUT") void supabase.auth.signInAnonymously();
     });
 
     (async () => {

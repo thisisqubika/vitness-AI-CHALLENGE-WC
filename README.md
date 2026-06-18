@@ -79,6 +79,17 @@ helper in `@vitness/shared`. Demo play-scripts are hand-authored in
 pending the `compose-play` pipeline, which will write the same shape to the
 `jugadas` table.
 
+### Collection — packs & album
+
+The Álbum tab shows the match sticker album (owned cards vs locked slots) with a
+completion bar, and the unopened-pack queue. Opening a pack calls the
+server-authoritative `open_pack` RPC (replay-safe roll) and reveals the rolled
+cards; "Add to album" fills the grid. Cards are procedural — flag, name, number,
+position, rarity frame, factual data only (no licensed imagery); golazo cards
+replay the embedded jugada. Stickers are seeded by
+[`build-catalog.ts`](supabase/seed/catalog/build-catalog.ts); packs are earned by
+winning jugada trivia.
+
 ### Jugada trivia ("who was in the play?")
 
 Tapping a goal opens a **server-authoritative** quiz: the dots are anonymous, and
