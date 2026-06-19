@@ -69,7 +69,13 @@ export function JugadaTrivia({
         </ThemedText>
 
         <View style={[styles.canvasWrap, { width, height }]}>
-          <JugadaCanvas script={script} width={width} height={height} playToken={playToken} revealed={!!result} />
+          <JugadaCanvas
+            script={script}
+            width={width}
+            height={height}
+            playToken={playToken}
+            revealed={!!result || (!loading && !challenge)}
+          />
         </View>
         <Pressable style={styles.replay} onPress={() => setPlayToken((n) => n + 1)}>
           <ThemedText type="small">↺ Replay</ThemedText>
@@ -80,9 +86,13 @@ export function JugadaTrivia({
             <ThemedText type="small" themeColor="textSecondary">
               Loading challenge…
             </ThemedText>
-          ) : error || !challenge ? (
+          ) : error ? (
             <ThemedText type="small" themeColor="textSecondary">
-              {error ?? "Trivia not available for this play yet."}
+              {error}
+            </ThemedText>
+          ) : !challenge ? (
+            <ThemedText type="small" themeColor="textSecondary">
+              Stylized reconstruction — &ldquo;who was in the play?&rdquo; coming for this match.
             </ThemedText>
           ) : (
             <>

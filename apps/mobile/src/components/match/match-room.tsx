@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
-import type { Match, MatchEvent } from "@vitness/shared";
+import { composePlayScript, type Match, type MatchEvent } from "@vitness/shared";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
@@ -188,23 +188,11 @@ function JugadaOverlay({
   onClose: () => void;
   onAwarded: () => void;
 }) {
-  const script = demoJugadaFor(goal.providerEventId);
+  const scorerId = goal.type === "goal" ? goal.scorerId : undefined;
+  const script =
+    demoJugadaFor(goal.providerEventId) ??
+    composePlayScript({ providerEventId: goal.providerEventId, team: goal.team, scorerId });
   const title = `${goal.minute}' Goal — ${teamName(match, goal.team)}`;
-  if (!script) {
-    return (
-      <View style={styles.fallback}>
-        <ThemedView type="backgroundElement" style={styles.fallbackCard}>
-          <ThemedText type="default">{title}</ThemedText>
-          <ThemedText type="small" themeColor="textSecondary">
-            Reconstruction not available yet.
-          </ThemedText>
-          <Pressable onPress={onClose} hitSlop={Spacing.two}>
-            <ThemedText type="link">Close</ThemedText>
-          </Pressable>
-        </ThemedView>
-      </View>
-    );
-  }
   return (
     <JugadaTrivia
       script={script}
