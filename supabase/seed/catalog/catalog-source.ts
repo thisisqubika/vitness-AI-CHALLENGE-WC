@@ -62,6 +62,22 @@ export const RARE_PLAYER_IDS = new Set<string>([
   "mex-9", // Jiménez
   "mex-22", // Lozano
   "mex-1", // Ochoa
+  "eng-10", // Bellingham
+  "eng-9", // Kane
+  "eng-7", // Saka
+  "fra-10", // Mbappé
+  "fra-7", // Griezmann
+  "ger-10", // Musiala
+  "ger-17", // Wirtz
+  "bra-11", // Vinícius Júnior
+  "bra-7", // Raphinha
+  "bra-9", // Endrick
+  "esp-19", // Lamine Yamal
+  "esp-26", // Pedri
+  "por-7", // Ronaldo
+  "por-8", // Bruno Fernandes
+  "ned-4", // Van Dijk
+  "ned-11", // Gakpo
 ]);
 
 export const ENGLAND: TeamSquad = {
@@ -118,6 +134,74 @@ export const GERMANY: TeamSquad = {
   ],
 };
 
+export const BRAZIL: TeamSquad = {
+  team: { code: "BRA", name: "Brazil", flagEmoji: "🇧🇷", primaryColor: "#fcd116", secondaryColor: "#009739" },
+  players: [
+    { id: "bra-1", name: "Alisson", shirtNumber: 1, position: "GK" },
+    { id: "bra-2", name: "Danilo", shirtNumber: 2, position: "RB" },
+    { id: "bra-3", name: "Marquinhos", shirtNumber: 3, position: "CB" },
+    { id: "bra-4", name: "Gabriel Magalhães", shirtNumber: 4, position: "CB" },
+    { id: "bra-6", name: "Wendell", shirtNumber: 6, position: "LB" },
+    { id: "bra-5", name: "Bruno Guimarães", shirtNumber: 5, position: "DM" },
+    { id: "bra-8", name: "Lucas Paquetá", shirtNumber: 8, position: "CM" },
+    { id: "bra-7", name: "Raphinha", shirtNumber: 7, position: "RW" },
+    { id: "bra-10", name: "Rodrygo", shirtNumber: 10, position: "AM" },
+    { id: "bra-11", name: "Vinícius Júnior", shirtNumber: 11, position: "LW" },
+    { id: "bra-9", name: "Endrick", shirtNumber: 9, position: "ST" },
+  ],
+};
+
+export const SPAIN: TeamSquad = {
+  team: { code: "ESP", name: "Spain", flagEmoji: "🇪🇸", primaryColor: "#c60b1e", secondaryColor: "#ffc400" },
+  players: [
+    { id: "esp-23", name: "Unai Simón", shirtNumber: 23, position: "GK" },
+    { id: "esp-2", name: "Dani Carvajal", shirtNumber: 2, position: "RB" },
+    { id: "esp-14", name: "Aymeric Laporte", shirtNumber: 14, position: "CB" },
+    { id: "esp-4", name: "Robin Le Normand", shirtNumber: 4, position: "CB" },
+    { id: "esp-24", name: "Marc Cucurella", shirtNumber: 24, position: "LB" },
+    { id: "esp-16", name: "Rodri", shirtNumber: 16, position: "DM" },
+    { id: "esp-8", name: "Fabián Ruiz", shirtNumber: 8, position: "CM" },
+    { id: "esp-26", name: "Pedri", shirtNumber: 26, position: "CM" },
+    { id: "esp-19", name: "Lamine Yamal", shirtNumber: 19, position: "RW" },
+    { id: "esp-17", name: "Nico Williams", shirtNumber: 17, position: "LW" },
+    { id: "esp-9", name: "Álvaro Morata", shirtNumber: 9, position: "ST" },
+  ],
+};
+
+export const PORTUGAL: TeamSquad = {
+  team: { code: "POR", name: "Portugal", flagEmoji: "🇵🇹", primaryColor: "#da291c", secondaryColor: "#046a38" },
+  players: [
+    { id: "por-1", name: "Diogo Costa", shirtNumber: 1, position: "GK" },
+    { id: "por-2", name: "Diogo Dalot", shirtNumber: 2, position: "RB" },
+    { id: "por-3", name: "Rúben Dias", shirtNumber: 3, position: "CB" },
+    { id: "por-4", name: "Gonçalo Inácio", shirtNumber: 4, position: "CB" },
+    { id: "por-20", name: "Nuno Mendes", shirtNumber: 20, position: "LB" },
+    { id: "por-6", name: "João Palhinha", shirtNumber: 6, position: "DM" },
+    { id: "por-8", name: "Bruno Fernandes", shirtNumber: 8, position: "CM" },
+    { id: "por-10", name: "Bernardo Silva", shirtNumber: 10, position: "AM" },
+    { id: "por-7", name: "Cristiano Ronaldo", shirtNumber: 7, position: "ST" },
+    { id: "por-21", name: "Diogo Jota", shirtNumber: 21, position: "ST" },
+    { id: "por-11", name: "Rafael Leão", shirtNumber: 11, position: "LW" },
+  ],
+};
+
+export const NETHERLANDS: TeamSquad = {
+  team: { code: "NED", name: "Netherlands", flagEmoji: "🇳🇱", primaryColor: "#ff7f00", secondaryColor: "#21468b" },
+  players: [
+    { id: "ned-1", name: "Bart Verbruggen", shirtNumber: 1, position: "GK" },
+    { id: "ned-22", name: "Denzel Dumfries", shirtNumber: 22, position: "RB" },
+    { id: "ned-4", name: "Virgil van Dijk", shirtNumber: 4, position: "CB" },
+    { id: "ned-3", name: "Stefan de Vrij", shirtNumber: 3, position: "CB" },
+    { id: "ned-17", name: "Nathan Aké", shirtNumber: 17, position: "LB" },
+    { id: "ned-6", name: "Jerdy Schouten", shirtNumber: 6, position: "DM" },
+    { id: "ned-14", name: "Tijjani Reijnders", shirtNumber: 14, position: "CM" },
+    { id: "ned-21", name: "Frenkie de Jong", shirtNumber: 21, position: "CM" },
+    { id: "ned-11", name: "Cody Gakpo", shirtNumber: 11, position: "LW" },
+    { id: "ned-10", name: "Memphis Depay", shirtNumber: 10, position: "ST" },
+    { id: "ned-18", name: "Donyell Malen", shirtNumber: 18, position: "RW" },
+  ],
+};
+
 export const DEMO_MATCH_ID = "wc2026-grp-arg-mex";
 export const SQUADS: TeamSquad[] = [ARGENTINA, MEXICO];
 
@@ -129,4 +213,8 @@ export const SQUADS_BY_NAME: Record<string, TeamSquad> = {
   England: ENGLAND,
   France: FRANCE,
   Germany: GERMANY,
+  Brazil: BRAZIL,
+  Spain: SPAIN,
+  Portugal: PORTUGAL,
+  Netherlands: NETHERLANDS,
 };

@@ -34,6 +34,7 @@ export function StickerCard({
 
   const accent = RARITY_COLOR[card.rarity];
   const isGolazo = card.kind === "golazo";
+  const isBadge = card.kind === "badge";
 
   const body = (
     <View style={[styles.card, { borderColor: accent }]}>
@@ -49,7 +50,9 @@ export function StickerCard({
       </View>
 
       <View style={styles.body}>
-        {isGolazo ? (
+        {isBadge ? (
+          <ThemedText style={styles.bigFlag}>{card.team.flagEmoji}</ThemedText>
+        ) : isGolazo ? (
           <ThemedText type="title" style={[styles.glyph, { color: accent }]}>
             ▶
           </ThemedText>
@@ -113,6 +116,7 @@ const styles = StyleSheet.create({
   number: { color: "#ffffff", fontSize: 12 },
   body: { flex: 1, alignItems: "center", justifyContent: "center" },
   glyph: { fontSize: 32, lineHeight: 36 },
+  bigFlag: { fontSize: 48, lineHeight: 56 },
   footer: { paddingHorizontal: 8, paddingBottom: 8, gap: 1 },
   name: { color: "#ffffff", fontSize: 12 },
   sub: { color: "#9aa0a6", fontSize: 11 },

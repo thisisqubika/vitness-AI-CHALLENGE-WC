@@ -8,7 +8,7 @@ import { StickerRaritySchema } from "./domain.ts";
  * imagery. See docs/CONCEPT.md § The Collection and ticket VIT-5.
  */
 
-export const StickerKindSchema = z.enum(["player", "moment", "motm", "golazo"]);
+export const StickerKindSchema = z.enum(["player", "moment", "motm", "golazo", "badge"]);
 export type StickerKind = z.infer<typeof StickerKindSchema>;
 
 export const TeamMetaSchema = z.object({
@@ -33,6 +33,8 @@ export const StickerCardSchema = z.object({
   /** For golazo cards: the retro jugada (real historic goal of this player) that
    * owning the card unlocks. Matches a providerEventId in retro-jugadas.json. */
   historicMomentId: z.string().optional(),
+  /** For badge cards: the WC 2026 group (e.g. "Group C"), used by the mega-album. */
+  group: z.string().optional(),
 });
 export type StickerCard = z.infer<typeof StickerCardSchema>;
 

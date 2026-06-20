@@ -30,6 +30,9 @@ export default function AppTabs() {
           <TabTrigger name="golazos" href="/golazos" asChild>
             <TabButton>Golazos</TabButton>
           </TabTrigger>
+          <TabTrigger name="mundial" href="/mundial" asChild>
+            <TabButton>Mundial</TabButton>
+          </TabTrigger>
         </CustomTabList>
       </TabList>
     </Tabs>
