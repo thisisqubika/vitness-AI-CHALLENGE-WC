@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { ARGENTINA } from "../catalog/catalog-source.ts";
+import { SQUADS_BY_NAME, type TeamSquad } from "../catalog/catalog-source.ts";
 
 /**
  * Compiles famous goals from StatsBomb Open Data (real event data) into retro
@@ -21,8 +21,8 @@ import { ARGENTINA } from "../catalog/catalog-source.ts";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const OUT = join(HERE, "../../../apps/mobile/src/data/retro-jugadas.json");
-const CACHE = "/tmp/sb-ev-3869685.json";
-const EVENTS_URL = "https://raw.githubusercontent.com/statsbomb/open-data/master/data/events/3869685.json";
+const eventsUrl = (matchId: number) =>
+  `https://raw.githubusercontent.com/statsbomb/open-data/master/data/events/${matchId}.json`;
 
 interface SbEvent {
   id: string;
@@ -37,11 +37,12 @@ interface SbEvent {
   shot?: { outcome?: { name: string }; key_pass_id?: string; body_part?: { name: string } };
 }
 
-async function loadEvents(): Promise<SbEvent[]> {
-  if (existsSync(CACHE)) return JSON.parse(readFileSync(CACHE, "utf8"));
-  const res = await fetch(EVENTS_URL);
+async function loadEvents(matchId: number): Promise<SbEvent[]> {
+  const cache = `/tmp/sb-ev-${matchId}.json`;
+  if (existsSync(cache)) return JSON.parse(readFileSync(cache, "utf8"));
+  const res = await fetch(eventsUrl(matchId));
   const json = await res.text();
-  writeFileSync(CACHE, json);
+  writeFileSync(cache, json);
   return JSON.parse(json);
 }
 
@@ -60,26 +61,35 @@ function norm(s: string): string {
   return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 }
 
-/** Map a StatsBomb full name to our Argentina squad player (full names differ —
- * StatsBomb keeps maternal surnames). Match if the squad surname appears in the
- * StatsBomb name. */
-function toSquad(full: string): { id: string; name: string } | null {
+/** Map a StatsBomb full name to a squad player (full names differ — StatsBomb
+ * keeps maternal surnames). Match if the squad surname appears in the SB name. */
+function toSquad(full: string, squad: TeamSquad | undefined): { id: string; name: string } | null {
+  if (!squad) return null;
   const f = norm(full);
-  for (const p of ARGENTINA.players) {
+  for (const p of squad.players) {
     const surname = norm(p.name).split(" ").slice(1).join(" ");
     if (surname && f.includes(surname)) return { id: p.id, name: p.name };
   }
   return null;
 }
 
-/** The famous goals we reconstruct from this match's real events. */
-const GOALS: Array<{ providerEventId: string; possession: number; title: string }> = [
-  { providerEventId: "retro-wc2022-final-dimaria", possession: 52, title: "World Cup 2022 final — the team goal" },
+interface GoalCfg {
+  providerEventId: string;
+  matchId: number;
+  possession: number;
+  title: string;
+}
+
+/** The famous goals we reconstruct from real events (StatsBomb match ids). */
+const GOALS: GoalCfg[] = [
+  { providerEventId: "retro-wc2022-final-dimaria", matchId: 3869685, possession: 52, title: "World Cup 2022 final — the team goal" },
   // 108' Messi extra-time strike (3–2) — the golazo card's historic moment.
-  { providerEventId: "retro-wc2022-final-messi", possession: 228, title: "World Cup 2022 final — Messi's extra-time strike" },
+  { providerEventId: "retro-wc2022-final-messi", matchId: 3869685, possession: 228, title: "World Cup 2022 final — Messi's extra-time strike" },
+  // 80' Mbappé — France's second, the comeback goal (Thuram assist).
+  { providerEventId: "retro-wc2022-final-mbappe", matchId: 3869685, possession: 165, title: "World Cup 2022 final — Mbappé's comeback goal" },
 ];
 
-function buildJugada(ev: SbEvent[], cfg: (typeof GOALS)[number]) {
+function buildJugada(ev: SbEvent[], cfg: GoalCfg) {
   const chain = ev
     .filter((e) => e.possession === cfg.possession && e.location && ["Pass", "Carry", "Shot"].includes(e.type.name))
     .sort((a, b) => a.index - b.index);
@@ -90,6 +100,7 @@ function buildJugada(ev: SbEvent[], cfg: (typeof GOALS)[number]) {
   const scorerFull = shot.player!.name;
   const assistFull = keyPass?.player?.name ?? "";
   const bodyPart = shot.shot?.body_part?.name ?? "Left Foot";
+  const squad = SQUADS_BY_NAME[shot.team.name];
 
   // Ball waypoints: first touch, every pass end, the shot, then the goal line.
   const points: Array<{ p: [number, number]; event?: string }> = [];
@@ -128,11 +139,12 @@ function buildJugada(ev: SbEvent[], cfg: (typeof GOALS)[number]) {
     keyframes,
   };
 
+  const pool = squad?.players ?? [];
   function nameOptions(full: string, seed: number): { options: Array<{ id: string; label: string }>; correctId: string } {
-    const matched = toSquad(full);
+    const matched = toSquad(full, squad);
     const correct = matched ?? { id: "name-correct", name: full };
     const distractors = shuffleSeeded(
-      ARGENTINA.players.filter((p) => p.id !== correct.id),
+      pool.filter((p) => p.id !== correct.id),
       seed,
     ).slice(0, 3);
     const options = shuffleSeeded(
@@ -177,7 +189,7 @@ function buildJugada(ev: SbEvent[], cfg: (typeof GOALS)[number]) {
     providerEventId: cfg.providerEventId,
     title: cfg.title,
     // The scorer mapped to our squad — links a golazo card to its historic moment.
-    playerId: toSquad(scorerFull)?.id ?? null,
+    playerId: toSquad(scorerFull, squad)?.id ?? null,
     playScript,
     distractors,
     answerKey,
@@ -186,8 +198,11 @@ function buildJugada(ev: SbEvent[], cfg: (typeof GOALS)[number]) {
 }
 
 async function main(): Promise<void> {
-  const ev = await loadEvents();
-  const jugadas = GOALS.map((cfg) => buildJugada(ev, cfg));
+  const byMatch = new Map<number, SbEvent[]>();
+  for (const matchId of new Set(GOALS.map((g) => g.matchId))) {
+    byMatch.set(matchId, await loadEvents(matchId));
+  }
+  const jugadas = GOALS.map((cfg) => buildJugada(byMatch.get(cfg.matchId)!, cfg));
 
   mkdirSync(dirname(OUT), { recursive: true });
   writeFileSync(
