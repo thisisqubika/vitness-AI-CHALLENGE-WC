@@ -5,7 +5,7 @@ import type { PlayScript, TriviaResult } from "@vitness/shared";
 import { ThemedText } from "@/components/themed-text";
 import { Brand, Spacing } from "@/constants/theme";
 import { useJugadaTrivia } from "@/hooks/use-jugada-trivia";
-import JugadaCanvas from "./jugada-canvas";
+import JugadaCanvas, { type Kit } from "./jugada-canvas";
 
 const PITCH_RATIO = 80 / 120;
 const CORRECT = "#16C47F";
@@ -34,12 +34,16 @@ export function JugadaTrivia({
   title,
   onClose,
   onAwarded,
+  homeKit,
+  awayKit,
 }: {
   script: PlayScript;
   providerEventId: string;
   title: string;
   onClose: () => void;
   onAwarded: () => void;
+  homeKit?: Kit;
+  awayKit?: Kit;
 }) {
   const { width: screenW, height: screenH } = useWindowDimensions();
   const { challenge, loading, error, submit } = useJugadaTrivia(providerEventId);
@@ -103,6 +107,8 @@ export function JugadaTrivia({
             playToken={playToken}
             revealed={!!result || (!loading && !challenge)}
             onComplete={() => setWatched(true)}
+            homeKit={homeKit}
+            awayKit={awayKit}
           />
           <Pressable style={styles.replayChip} onPress={replay}>
             <ThemedText type="small" style={styles.replayText}>

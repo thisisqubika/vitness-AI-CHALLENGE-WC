@@ -11,12 +11,18 @@ import {
 
 import { JerseyShape } from "@/components/sticker/jersey";
 
-// Two generic kits, reusing the album's jersey artwork (home vs away).
-const HOME_KIT = { primary: "#3FA7FF", secondary: "#ffffff" };
-const AWAY_KIT = { primary: "#E5544B", secondary: "#ffffff" };
+// Fallback kits (used when the caller doesn't know the real teams).
+const DEFAULT_HOME_KIT: Kit = { primary: "#3FA7FF", secondary: "#ffffff" };
+const DEFAULT_AWAY_KIT: Kit = { primary: "#E5544B", secondary: "#ffffff" };
 const BALL_COLOR = "#ffffff";
 const LINE = "rgba(255,255,255,0.55)";
 const ACCENT = "#16C47F";
+
+export interface Kit {
+  primary: string;
+  secondary: string;
+  flag?: string;
+}
 
 interface Props {
   script: PlayScript;
@@ -25,6 +31,8 @@ interface Props {
   playToken: number;
   revealed?: boolean;
   onComplete?: () => void;
+  homeKit?: Kit;
+  awayKit?: Kit;
 }
 
 /**
@@ -34,7 +42,16 @@ interface Props {
  * paints. SVG renders identically on web and native with no WASM dependency.
  * A short ball trail, mown stripes and a goal flash sell the reconstruction.
  */
-export default function JugadaCanvas({ script, width, height, playToken, revealed = true, onComplete }: Props) {
+export default function JugadaCanvas({
+  script,
+  width,
+  height,
+  playToken,
+  revealed = true,
+  onComplete,
+  homeKit = DEFAULT_HOME_KIT,
+  awayKit = DEFAULT_AWAY_KIT,
+}: Props) {
   const play = useMemo(() => densifyPlayScript(script), [script]);
   const [t, setT] = useState(0);
   const startRef = useRef<number | null>(null);
@@ -127,7 +144,7 @@ export default function JugadaCanvas({ script, width, height, playToken, reveale
       {play.actors.map((actor) => {
         const p = frame.actors[actor.slotId];
         if (!p) return null;
-        const kit = actor.team === "home" ? HOME_KIT : AWAY_KIT;
+        const kit = actor.team === "home" ? homeKit : awayKit;
         return (
           <JerseyShape
             key={actor.slotId}
@@ -136,6 +153,7 @@ export default function JugadaCanvas({ script, width, height, playToken, reveale
             size={22}
             primary={kit.primary}
             secondary={kit.secondary}
+            flag={kit.flag}
             number={actor.shirtNumber}
             showNumber={revealed && actor.shirtNumber !== undefined}
             highlight={actor.role === "scorer" && revealed}

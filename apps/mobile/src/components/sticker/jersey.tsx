@@ -77,6 +77,7 @@ export function JerseyShape({
   primary,
   secondary,
   number,
+  flag,
   showNumber = true,
   highlight = false,
   accent = "#16C47F",
@@ -87,6 +88,7 @@ export function JerseyShape({
   primary: string;
   secondary: string;
   number?: number;
+  flag?: string;
   showNumber?: boolean;
   highlight?: boolean;
   accent?: string;
@@ -95,6 +97,7 @@ export function JerseyShape({
   const tx = cx - SHIRT_CX * s;
   const ty = cy - SHIRT_CY * s;
   const numberFill = luminance(primary) > 0.6 ? "#16181c" : "#ffffff";
+  const showNum = showNumber && number !== undefined;
   return (
     <G>
       {highlight ? <Circle cx={cx} cy={cy} r={size * 0.62} fill="none" stroke={accent} strokeWidth={2} opacity={0.9} /> : null}
@@ -103,9 +106,14 @@ export function JerseyShape({
         <Path d={LEFT_CUFF} fill={secondary} />
         <Path d={RIGHT_CUFF} fill={secondary} />
         <Path d={COLLAR} fill={secondary} />
-        {showNumber && number !== undefined ? (
+        {showNum ? (
           <SvgText x={60} y={82} fill={numberFill} fontSize={36} fontWeight="bold" textAnchor="middle">
             {number}
+          </SvgText>
+        ) : flag ? (
+          // the country flag identifies the team while players stay anonymous
+          <SvgText x={60} y={84} fontSize={44} textAnchor="middle">
+            {flag}
           </SvgText>
         ) : null}
       </G>

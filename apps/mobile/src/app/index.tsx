@@ -70,6 +70,8 @@ export default function HomeScreen() {
           script={retro.playScript}
           providerEventId={retro.providerEventId}
           title={retro.title}
+          homeKit={retro.home}
+          awayKit={retro.away}
           onClose={() => setRetroOpen(false)}
           onAwarded={() => {}}
         />

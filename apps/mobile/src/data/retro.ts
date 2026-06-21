@@ -8,10 +8,18 @@ import data from "./retro-jugadas.json";
  * reconstruction; the server jugada_challenges view + submit-answer provide the
  * graded trivia. See ticket VIT-8.
  */
+export interface TeamKit {
+  flag: string;
+  primary: string;
+  secondary: string;
+}
+
 export interface RetroJugada {
   providerEventId: string;
   title: string;
   playScript: PlayScript;
+  home?: TeamKit;
+  away?: TeamKit;
 }
 
 export const RETRO_JUGADAS = data as unknown as RetroJugada[];

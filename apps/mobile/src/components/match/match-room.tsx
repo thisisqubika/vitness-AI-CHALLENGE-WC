@@ -10,6 +10,7 @@ import { useMatchRoom } from "@/hooks/use-match-room";
 import { useCoins } from "@/hooks/use-coins";
 import { JugadaTrivia } from "@/components/jugada/jugada-trivia";
 import { demoJugadaFor } from "@/data/demo-jugadas";
+import { teamFlag } from "@/data/team-flags";
 import { eventLabel } from "./event-label";
 import { MomentumBar } from "./momentum-bar";
 
@@ -193,11 +194,17 @@ function JugadaOverlay({
     demoJugadaFor(goal.providerEventId) ??
     composePlayScript({ providerEventId: goal.providerEventId, team: goal.team, scorerId });
   const title = `${goal.minute}' Goal — ${teamName(match, goal.team)}`;
+  const toKit = (name: string) => {
+    const f = teamFlag(name);
+    return { flag: f.flag, primary: f.color, secondary: "#ffffff" };
+  };
   return (
     <JugadaTrivia
       script={script}
       providerEventId={goal.providerEventId}
       title={title}
+      homeKit={toKit(match.homeTeam)}
+      awayKit={toKit(match.awayTeam)}
       onClose={onClose}
       onAwarded={onAwarded}
     />

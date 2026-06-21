@@ -3,6 +3,16 @@
     "providerEventId": "retro-wc2022-final-dimaria",
     "title": "World Cup 2022 final — the team goal",
     "playerId": "arg-11",
+    "home": {
+      "flag": "🇦🇷",
+      "primary": "#75AADB",
+      "secondary": "#ffffff"
+    },
+    "away": {
+      "flag": "🇫🇷",
+      "primary": "#1f3a93",
+      "secondary": "#ffffff"
+    },
     "playScript": {
       "version": 1,
       "goalType": "open_play",
@@ -665,6 +675,16 @@
     "providerEventId": "retro-wc2022-final-messi",
     "title": "World Cup 2022 final — Messi's extra-time strike",
     "playerId": "arg-10",
+    "home": {
+      "flag": "🇦🇷",
+      "primary": "#75AADB",
+      "secondary": "#ffffff"
+    },
+    "away": {
+      "flag": "🇫🇷",
+      "primary": "#1f3a93",
+      "secondary": "#ffffff"
+    },
     "playScript": {
       "version": 1,
       "goalType": "open_play",
@@ -1452,6 +1472,16 @@
     "providerEventId": "retro-wc2022-final-mbappe",
     "title": "World Cup 2022 final — Mbappé's comeback goal",
     "playerId": "fra-10",
+    "home": {
+      "flag": "🇫🇷",
+      "primary": "#1f3a93",
+      "secondary": "#ffffff"
+    },
+    "away": {
+      "flag": "🇦🇷",
+      "primary": "#75AADB",
+      "secondary": "#ffffff"
+    },
     "playScript": {
       "version": 1,
       "goalType": "open_play",

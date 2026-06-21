@@ -98,6 +98,8 @@ export default function GolazosScreen() {
           script={openJugada.playScript}
           providerEventId={openJugada.providerEventId}
           title={openJugada.title}
+          homeKit={openJugada.home}
+          awayKit={openJugada.away}
           onClose={() => setOpenMomentId(null)}
           onAwarded={refresh}
         />

@@ -78,15 +78,18 @@ interface GoalCfg {
   matchId: number;
   possession: number;
   title: string;
+  /** The defending team's name (for the away kit/flag); the scoring team comes
+   * from the shot event. */
+  opponent: string;
 }
 
 /** The famous goals we reconstruct from real events (StatsBomb match ids). */
 const GOALS: GoalCfg[] = [
-  { providerEventId: "retro-wc2022-final-dimaria", matchId: 3869685, possession: 52, title: "World Cup 2022 final — the team goal" },
+  { providerEventId: "retro-wc2022-final-dimaria", matchId: 3869685, possession: 52, title: "World Cup 2022 final — the team goal", opponent: "France" },
   // 108' Messi extra-time strike (3–2) — the golazo card's historic moment.
-  { providerEventId: "retro-wc2022-final-messi", matchId: 3869685, possession: 228, title: "World Cup 2022 final — Messi's extra-time strike" },
+  { providerEventId: "retro-wc2022-final-messi", matchId: 3869685, possession: 228, title: "World Cup 2022 final — Messi's extra-time strike", opponent: "France" },
   // 80' Mbappé — France's second, the comeback goal (Thuram assist).
-  { providerEventId: "retro-wc2022-final-mbappe", matchId: 3869685, possession: 165, title: "World Cup 2022 final — Mbappé's comeback goal" },
+  { providerEventId: "retro-wc2022-final-mbappe", matchId: 3869685, possession: 165, title: "World Cup 2022 final — Mbappé's comeback goal", opponent: "Argentina" },
 ];
 
 function buildJugada(ev: SbEvent[], cfg: GoalCfg) {
@@ -263,11 +266,18 @@ function buildJugada(ev: SbEvent[], cfg: GoalCfg) {
   const answerKey: Record<string, string> = { scorer: scorerQ.correctId, bodypart: "correct", year: "correct" };
   if (assistQ) answerKey.assist = assistQ.correctId;
 
+  // Team kits for the replay jerseys: home = the scoring team, away = opponent.
+  const oppSquad = SQUADS_BY_NAME[cfg.opponent];
+  const kit = (t?: { flagEmoji: string; primaryColor: string; secondaryColor: string }) =>
+    t ? { flag: t.flagEmoji, primary: t.primaryColor, secondary: t.secondaryColor } : undefined;
+
   return {
     providerEventId: cfg.providerEventId,
     title: cfg.title,
     // The scorer mapped to our squad — links a golazo card to its historic moment.
     playerId: toSquad(scorerFull, squad)?.id ?? null,
+    home: kit(squad?.team),
+    away: kit(oppSquad?.team),
     playScript,
     distractors,
     answerKey,
