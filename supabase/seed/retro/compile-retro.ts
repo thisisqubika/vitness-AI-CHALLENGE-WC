@@ -101,6 +101,14 @@ function buildJugada(ev: SbEvent[], cfg: GoalCfg) {
   const assistFull = keyPass?.player?.name ?? "";
   const bodyPart = shot.shot?.body_part?.name ?? "Left Foot";
   const squad = SQUADS_BY_NAME[shot.team.name];
+  // Shirt number of a known player (scorer/assist) — revealed on the jerseys
+  // after the challenge is solved. Unknown/anonymous dots stay blank.
+  const shirtOf = (full: string): number | undefined => {
+    const m = toSquad(full, squad);
+    return m ? squad?.players.find((p) => p.id === m.id)?.shirtNumber : undefined;
+  };
+  const scorerNum = shirtOf(scorerFull);
+  const assistNum = assistFull ? shirtOf(assistFull) : undefined;
 
   // Ball waypoints: first touch, every pass end, the shot, then the goal line.
   const points: Array<{ p: [number, number]; event?: string }> = [];
@@ -193,6 +201,8 @@ function buildJugada(ev: SbEvent[], cfg: GoalCfg) {
     slotId: d === scorerDot ? "scorer" : d === assistDot ? "assist" : `atk${d}`,
     team: "home",
     role: d === scorerDot ? "scorer" : d === assistDot ? "assist" : "carrier",
+    ...(d === scorerDot && scorerNum !== undefined ? { shirtNumber: scorerNum } : {}),
+    ...(d === assistDot && assistNum !== undefined ? { shirtNumber: assistNum } : {}),
   }));
   const playScript = {
     version: 1,

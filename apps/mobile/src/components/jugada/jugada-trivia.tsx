@@ -65,6 +65,8 @@ export function JugadaTrivia({
     if (r) {
       setResult(r);
       onAwarded();
+      // Re-run the play once more, now with the players' numbers on the jerseys.
+      setPlayToken((n) => n + 1);
     }
   }
 

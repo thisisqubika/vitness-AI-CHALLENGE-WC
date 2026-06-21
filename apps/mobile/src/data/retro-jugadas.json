@@ -32,12 +32,14 @@
         {
           "slotId": "assist",
           "team": "home",
-          "role": "assist"
+          "role": "assist",
+          "shirtNumber": 20
         },
         {
           "slotId": "scorer",
           "team": "home",
-          "role": "scorer"
+          "role": "scorer",
+          "shirtNumber": 11
         },
         {
           "slotId": "keeper",
@@ -697,7 +699,8 @@
         {
           "slotId": "scorer",
           "team": "home",
-          "role": "scorer"
+          "role": "scorer",
+          "shirtNumber": 10
         },
         {
           "slotId": "keeper",
@@ -1458,7 +1461,8 @@
         {
           "slotId": "scorer",
           "team": "home",
-          "role": "scorer"
+          "role": "scorer",
+          "shirtNumber": 10
         },
         {
           "slotId": "atk1",

@@ -6,6 +6,7 @@ import Svg, {
   G,
   Line,
   LinearGradient,
+  Polygon,
   RadialGradient,
   Rect,
   Stop,
@@ -131,30 +132,20 @@ export default function JugadaCanvas({ script, width, height, playToken, reveale
         return <Ellipse key={`sh-${actor.slotId}`} cx={sx(p.x)} cy={sy(p.y) + 9} rx={9} ry={3} fill="rgba(0,0,0,0.28)" />;
       })}
 
-      {/* players */}
+      {/* players — jerseys, with numbers revealed after the challenge */}
       {play.actors.map((actor) => {
         const p = frame.actors[actor.slotId];
         if (!p) return null;
-        const isScorer = actor.role === "scorer";
         return (
-          <G key={actor.slotId}>
-            {isScorer && revealed ? (
-              <Circle cx={sx(p.x)} cy={sy(p.y)} r={13} fill="none" stroke={ACCENT} strokeWidth={2} opacity={0.85} />
-            ) : null}
-            <Circle
-              cx={sx(p.x)}
-              cy={sy(p.y)}
-              r={10}
-              fill={actor.team === "home" ? HOME_COLOR : AWAY_COLOR}
-              stroke="#ffffff"
-              strokeWidth={1.5}
-            />
-            {revealed && actor.shirtNumber !== undefined ? (
-              <SvgText x={sx(p.x)} y={sy(p.y) + 3.5} fontSize={10} fontWeight="bold" fill="#0b1320" textAnchor="middle">
-                {actor.shirtNumber}
-              </SvgText>
-            ) : null}
-          </G>
+          <Jersey
+            key={actor.slotId}
+            cx={sx(p.x)}
+            cy={sy(p.y)}
+            color={actor.team === "home" ? HOME_COLOR : AWAY_COLOR}
+            number={actor.shirtNumber}
+            showNumber={revealed && actor.shirtNumber !== undefined}
+            highlight={actor.role === "scorer" && revealed}
+          />
         );
       })}
 
@@ -166,5 +157,51 @@ export default function JugadaCanvas({ script, width, height, playToken, reveale
       {/* ball */}
       <Circle cx={sx(frame.ball.x)} cy={sy(frame.ball.y)} r={isGoal ? 6 : 4.5} fill={BALL_COLOR} stroke="rgba(0,0,0,0.25)" strokeWidth={1} />
     </Svg>
+  );
+}
+
+/** A small football shirt with a centred number area. The number is only drawn
+ * once the play is revealed (challenge solved). */
+function Jersey({
+  cx,
+  cy,
+  color,
+  number,
+  showNumber,
+  highlight,
+}: {
+  cx: number;
+  cy: number;
+  color: string;
+  number?: number;
+  showNumber: boolean;
+  highlight: boolean;
+}) {
+  // shirt silhouette: collar dip, shoulders, sleeves, body — pointing up
+  const pts = [
+    [cx - 5.5, cy - 7],
+    [cx - 2.5, cy - 6],
+    [cx, cy - 4.2],
+    [cx + 2.5, cy - 6],
+    [cx + 5.5, cy - 7],
+    [cx + 9.5, cy - 3.5],
+    [cx + 7, cy - 0.8],
+    [cx + 6, cy + 8],
+    [cx - 6, cy + 8],
+    [cx - 7, cy - 0.8],
+    [cx - 9.5, cy - 3.5],
+  ]
+    .map((p) => `${p[0]},${p[1]}`)
+    .join(" ");
+  return (
+    <G>
+      {highlight ? <Circle cx={cx} cy={cy} r={13} fill="none" stroke={ACCENT} strokeWidth={2} opacity={0.9} /> : null}
+      <Polygon points={pts} fill={color} stroke="#ffffff" strokeWidth={1.2} strokeLinejoin="round" />
+      {showNumber && number !== undefined ? (
+        <SvgText x={cx} y={cy + 4.5} fontSize={9} fontWeight="bold" fill="#0b1320" textAnchor="middle">
+          {number}
+        </SvgText>
+      ) : null}
+    </G>
   );
 }
