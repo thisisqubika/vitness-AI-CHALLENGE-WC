@@ -1,4 +1,4 @@
-import Svg, { Path, Text as SvgText } from "react-native-svg";
+import Svg, { Circle, G, Path, Text as SvgText } from "react-native-svg";
 
 /**
  * A procedural football shirt drawn in a team's colours, with the shirt number
@@ -56,5 +56,59 @@ export function Jersey({
         </SvgText>
       ) : null}
     </Svg>
+  );
+}
+
+// The shirt artwork spans roughly y 18–106 (≈88 tall), centred near (60, 62).
+const SHIRT_H = 88;
+const SHIRT_CX = 60;
+const SHIRT_CY = 62;
+
+/**
+ * The same jersey artwork as {@link Jersey}, but rendered as a `<G>` to be
+ * embedded inside an existing `<Svg>` (e.g. the pitch reconstruction), centred
+ * at (cx, cy) and scaled to `size` px tall. Lets the replay markers reuse the
+ * album kit instead of a separate marker style.
+ */
+export function JerseyShape({
+  cx,
+  cy,
+  size = 22,
+  primary,
+  secondary,
+  number,
+  showNumber = true,
+  highlight = false,
+  accent = "#16C47F",
+}: {
+  cx: number;
+  cy: number;
+  size?: number;
+  primary: string;
+  secondary: string;
+  number?: number;
+  showNumber?: boolean;
+  highlight?: boolean;
+  accent?: string;
+}) {
+  const s = size / SHIRT_H;
+  const tx = cx - SHIRT_CX * s;
+  const ty = cy - SHIRT_CY * s;
+  const numberFill = luminance(primary) > 0.6 ? "#16181c" : "#ffffff";
+  return (
+    <G>
+      {highlight ? <Circle cx={cx} cy={cy} r={size * 0.62} fill="none" stroke={accent} strokeWidth={2} opacity={0.9} /> : null}
+      <G transform={`translate(${tx} ${ty}) scale(${s})`}>
+        <Path d={SHIRT} fill={primary} stroke="rgba(0,0,0,0.35)" strokeWidth={3} strokeLinejoin="round" />
+        <Path d={LEFT_CUFF} fill={secondary} />
+        <Path d={RIGHT_CUFF} fill={secondary} />
+        <Path d={COLLAR} fill={secondary} />
+        {showNumber && number !== undefined ? (
+          <SvgText x={60} y={82} fill={numberFill} fontSize={36} fontWeight="bold" textAnchor="middle">
+            {number}
+          </SvgText>
+        ) : null}
+      </G>
+    </G>
   );
 }

@@ -1,17 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import Svg, {
-  Circle,
-  Defs,
-  Ellipse,
-  G,
-  Line,
-  LinearGradient,
-  Polygon,
-  RadialGradient,
-  Rect,
-  Stop,
-  Text as SvgText,
-} from "react-native-svg";
+import Svg, { Circle, Defs, Ellipse, Line, LinearGradient, RadialGradient, Rect, Stop } from "react-native-svg";
 import {
   PITCH_LENGTH,
   PITCH_WIDTH,
@@ -21,8 +9,11 @@ import {
   type PlayScript,
 } from "@vitness/shared";
 
-const HOME_COLOR = "#3FA7FF";
-const AWAY_COLOR = "#FF7A59";
+import { JerseyShape } from "@/components/sticker/jersey";
+
+// Two generic kits, reusing the album's jersey artwork (home vs away).
+const HOME_KIT = { primary: "#3FA7FF", secondary: "#ffffff" };
+const AWAY_KIT = { primary: "#E5544B", secondary: "#ffffff" };
 const BALL_COLOR = "#ffffff";
 const LINE = "rgba(255,255,255,0.55)";
 const ACCENT = "#16C47F";
@@ -132,19 +123,23 @@ export default function JugadaCanvas({ script, width, height, playToken, reveale
         return <Ellipse key={`sh-${actor.slotId}`} cx={sx(p.x)} cy={sy(p.y) + 9} rx={9} ry={3} fill="rgba(0,0,0,0.28)" />;
       })}
 
-      {/* players — jerseys, with numbers revealed after the challenge */}
+      {/* players — album jerseys, with numbers revealed after the challenge */}
       {play.actors.map((actor) => {
         const p = frame.actors[actor.slotId];
         if (!p) return null;
+        const kit = actor.team === "home" ? HOME_KIT : AWAY_KIT;
         return (
-          <Jersey
+          <JerseyShape
             key={actor.slotId}
             cx={sx(p.x)}
             cy={sy(p.y)}
-            color={actor.team === "home" ? HOME_COLOR : AWAY_COLOR}
+            size={22}
+            primary={kit.primary}
+            secondary={kit.secondary}
             number={actor.shirtNumber}
             showNumber={revealed && actor.shirtNumber !== undefined}
             highlight={actor.role === "scorer" && revealed}
+            accent={ACCENT}
           />
         );
       })}
@@ -157,51 +152,5 @@ export default function JugadaCanvas({ script, width, height, playToken, reveale
       {/* ball */}
       <Circle cx={sx(frame.ball.x)} cy={sy(frame.ball.y)} r={isGoal ? 6 : 4.5} fill={BALL_COLOR} stroke="rgba(0,0,0,0.25)" strokeWidth={1} />
     </Svg>
-  );
-}
-
-/** A small football shirt with a centred number area. The number is only drawn
- * once the play is revealed (challenge solved). */
-function Jersey({
-  cx,
-  cy,
-  color,
-  number,
-  showNumber,
-  highlight,
-}: {
-  cx: number;
-  cy: number;
-  color: string;
-  number?: number;
-  showNumber: boolean;
-  highlight: boolean;
-}) {
-  // shirt silhouette: collar dip, shoulders, sleeves, body — pointing up
-  const pts = [
-    [cx - 5.5, cy - 7],
-    [cx - 2.5, cy - 6],
-    [cx, cy - 4.2],
-    [cx + 2.5, cy - 6],
-    [cx + 5.5, cy - 7],
-    [cx + 9.5, cy - 3.5],
-    [cx + 7, cy - 0.8],
-    [cx + 6, cy + 8],
-    [cx - 6, cy + 8],
-    [cx - 7, cy - 0.8],
-    [cx - 9.5, cy - 3.5],
-  ]
-    .map((p) => `${p[0]},${p[1]}`)
-    .join(" ");
-  return (
-    <G>
-      {highlight ? <Circle cx={cx} cy={cy} r={13} fill="none" stroke={ACCENT} strokeWidth={2} opacity={0.9} /> : null}
-      <Polygon points={pts} fill={color} stroke="#ffffff" strokeWidth={1.2} strokeLinejoin="round" />
-      {showNumber && number !== undefined ? (
-        <SvgText x={cx} y={cy + 4.5} fontSize={9} fontWeight="bold" fill="#0b1320" textAnchor="middle">
-          {number}
-        </SvgText>
-      ) : null}
-    </G>
   );
 }
