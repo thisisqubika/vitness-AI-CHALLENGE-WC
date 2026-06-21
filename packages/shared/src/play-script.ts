@@ -67,7 +67,7 @@ export const PlayScriptSchema = z.object({
   goalType: GoalTypeSchema,
   durationMs: z.number().int().min(1000).max(30000),
   attackingSide: TeamSideSchema,
-  actors: z.array(PlayActorSchema).min(1).max(6),
+  actors: z.array(PlayActorSchema).min(1).max(12),
   keyframes: z.array(KeyframeSchema).min(2),
 });
 export type PlayScript = z.infer<typeof PlayScriptSchema>;

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Svg, {
   Circle,
   Defs,
@@ -14,6 +14,7 @@ import Svg, {
 import {
   PITCH_LENGTH,
   PITCH_WIDTH,
+  densifyPlayScript,
   samplePlay,
   activeEventAt,
   type PlayScript,
@@ -42,6 +43,7 @@ interface Props {
  * A short ball trail, mown stripes and a goal flash sell the reconstruction.
  */
 export default function JugadaCanvas({ script, width, height, playToken, revealed = true, onComplete }: Props) {
+  const play = useMemo(() => densifyPlayScript(script), [script]);
   const [t, setT] = useState(0);
   const startRef = useRef<number | null>(null);
   const doneRef = useRef(false);
@@ -53,7 +55,7 @@ export default function JugadaCanvas({ script, width, height, playToken, reveale
     const step = (now: number) => {
       if (startRef.current === null) startRef.current = now;
       const elapsed = now - startRef.current;
-      const next = Math.min(1, elapsed / script.durationMs);
+      const next = Math.min(1, elapsed / play.durationMs);
       setT(next);
       if (next < 1) {
         raf = requestAnimationFrame(step);
@@ -70,15 +72,15 @@ export default function JugadaCanvas({ script, width, height, playToken, reveale
   const sx = (x: number) => (x / PITCH_LENGTH) * width;
   const sy = (y: number) => (y / PITCH_WIDTH) * height;
 
-  const frame = samplePlay(script, t);
-  const event = activeEventAt(script, t);
+  const frame = samplePlay(play, t);
+  const event = activeEventAt(play, t);
   const isGoal = event === "goal";
   const isShot = event === "shot";
-  const attackingHome = script.attackingSide === "home";
+  const attackingHome = play.attackingSide === "home";
   const goalX = attackingHome ? width : 0;
 
   // A few ghost positions behind the ball for a motion trail.
-  const trail = [0.05, 0.1, 0.16].map((dt) => samplePlay(script, Math.max(0, t - dt)).ball);
+  const trail = [0.05, 0.1, 0.16].map((dt) => samplePlay(play, Math.max(0, t - dt)).ball);
 
   const stripes = 7;
 
@@ -123,14 +125,14 @@ export default function JugadaCanvas({ script, width, height, playToken, reveale
       ) : null}
 
       {/* player shadows */}
-      {script.actors.map((actor) => {
+      {play.actors.map((actor) => {
         const p = frame.actors[actor.slotId];
         if (!p) return null;
         return <Ellipse key={`sh-${actor.slotId}`} cx={sx(p.x)} cy={sy(p.y) + 9} rx={9} ry={3} fill="rgba(0,0,0,0.28)" />;
       })}
 
       {/* players */}
-      {script.actors.map((actor) => {
+      {play.actors.map((actor) => {
         const p = frame.actors[actor.slotId];
         if (!p) return null;
         const isScorer = actor.role === "scorer";

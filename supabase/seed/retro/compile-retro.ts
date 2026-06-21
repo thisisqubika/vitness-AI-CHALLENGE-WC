@@ -113,18 +113,12 @@ function buildJugada(ev: SbEvent[], cfg: GoalCfg) {
   points.push({ p: [120, shot.location![1]], event: "goal" });
 
   const n = points.length - 1;
-  // The ball polyline is real; the four actor dots are SYNTHESIZED. The key to a
-  // believable reconstruction is that nobody is glued to the ball: a player only
-  // travels WITH the ball while dribbling it (a "carry"). During a pass the ball
-  // flies alone from the passer (who stays) to the receiver (already waiting),
-  // and during the shot the striker stays put as the ball flies to goal.
-  //   • assist  — possession/build-up player: rides the ball on carries up to the
-  //               key pass, then holds where it played the pass.
-  //   • scorer  — makes an off-ball run to the reception, dribbles to the shot,
-  //               then plants at the strike point as the ball hits the net.
-  //   • keeper  — holds the line, only sliding across once the ball enters the
-  //               final third.
-  //   • defender— marks the striker, a couple of yards goal-side.
+  // The ball polyline is real; the dots are SYNTHESIZED into a full team picture.
+  // Each ball touch belongs to an attacker; passes hand the ball to a DIFFERENT
+  // attacker, so every pass lands on a real receiver dot (no passing into space).
+  // Carries keep the same owner (a dribble). Off the ball, a player glides toward
+  // its next touch so it is in position to receive. We add an opposition keeper +
+  // back line so the pitch reads like 10 players, not 4.
   type P = { x: number; y: number };
   const clamp = (v: number, max: number) => Math.max(0.5, Math.min(max - 0.5, v));
   const lerp = (a: number, b: number, f: number) => a + (b - a) * f;
@@ -133,76 +127,82 @@ function buildJugada(ev: SbEvent[], cfg: GoalCfg) {
   const pt2 = (p: P) => ({ x: Math.round(clamp(p.x, 120) * 10) / 10, y: Math.round(clamp(p.y, 80) * 10) / 10 });
   const B: P[] = points.map((p) => ({ x: p.p[0], y: p.p[1] }));
   const evs = points.map((p) => p.event);
-  /** A point `d` yards behind the ball, toward where it came from (so a dribbler
-   * sits just behind the ball rather than on top of it). */
-  const trailing = (i: number, d: number): P => {
-    const prev = B[i - 1] ?? B[i]!;
-    const cur = B[i]!;
-    const dx = prev.x - cur.x;
-    const dy = prev.y - cur.y;
-    const m = Math.hypot(dx, dy) || 1;
-    return { x: cur.x + (dx / m) * d, y: cur.y + (dy / m) * d };
-  };
 
   const shotIdx = points.findIndex((p) => p.event === "shot");
   let kpIdx = 0;
   for (let i = 0; i < shotIdx; i++) if (evs[i] === "pass") kpIdx = i;
   kpIdx = Math.max(1, Math.min(kpIdx || Math.floor(shotIdx * 0.6), shotIdx - 1));
   const shotLoc: P = { x: shot.location![0], y: shot.location![1] };
-  const recv = B[kpIdx]!; // where the scorer receives the key pass
-  const scorerStart: P = { x: recv.x - 14, y: recv.y + 11 }; // off-ball run origin
 
-  // Walk the chain once, advancing each actor only when its action demands it.
-  const assistTrack: P[] = [];
-  const scorerTrack: P[] = [];
-  let ap: P = trailing(0, 1.4); // assist starts on the ball
-  for (let i = 0; i <= n; i++) {
-    // assist: rides the ball on build-up carries; on a pass it stays at the
-    // origin it played from; after the key pass it holds.
-    if (i > 0 && i <= kpIdx) {
-      if (evs[i] === "carry") ap = trailing(i, 1.4);
-      else if (evs[i] === "pass") ap = B[i - 1]!; // stayed to make the pass
+  // Ownership chain: a new owner on every pass, same owner through carries.
+  const ownerAt: number[] = [0];
+  for (let i = 1; i <= shotIdx; i++) ownerAt[i] = ownerAt[i - 1]! + (evs[i] === "pass" ? 1 : 0);
+  const distinct = ownerAt[shotIdx]! + 1;
+  const POOL = Math.max(2, Math.min(distinct, 6)); // distinct attacker dots
+  const dotOf = (o: number) => ((o % POOL) + POOL) % POOL;
+  const scorerDot = dotOf(ownerAt[shotIdx]!);
+  let assistDot = dotOf(Math.max(0, ownerAt[kpIdx]! - 1)); // the key-pass player
+  if (assistDot === scorerDot) assistDot = dotOf(scorerDot + 1);
+
+  // Each attacker's touch stations (keyframe index → ball position).
+  const stations: { i: number; pos: P }[][] = Array.from({ length: POOL }, () => []);
+  for (let i = 0; i <= shotIdx; i++) stations[dotOf(ownerAt[i]!)]!.push({ i, pos: B[i]! });
+  stations[scorerDot]!.push({ i: n, pos: shotLoc }); // striker holds as the ball flies in
+
+  // Position of a dot at keyframe j: interpolate between its touches; hold at the
+  // ends (an off-ball player drifts toward where it will next receive).
+  const posOnTrack = (st: { i: number; pos: P }[], j: number): P => {
+    if (st.length === 0) return B[0]!;
+    if (j <= st[0]!.i) return st[0]!.pos;
+    const last = st[st.length - 1]!;
+    if (j >= last.i) return last.pos;
+    for (let k = 0; k < st.length - 1; k++) {
+      const a = st[k]!;
+      const b = st[k + 1]!;
+      if (j >= a.i && j <= b.i) return lerpP(a.pos, b.pos, (j - a.i) / ((b.i - a.i) || 1));
     }
-    assistTrack[i] = ap;
+    return last.pos;
+  };
 
-    // scorer: off-ball run in, then on the ball from reception to the shot.
-    let sp: P;
-    if (i < kpIdx) sp = lerpP(scorerStart, recv, kpIdx ? i / kpIdx : 1); // making the run
-    else if (i === kpIdx) sp = recv; // receives
-    else if (i < shotIdx) sp = trailing(i, 1.2); // dribbles to the shot
-    else sp = shotLoc; // strikes and stays as the ball flies in
-    scorerTrack[i] = sp;
-  }
-
+  const DEF_LANES = [24, 40, 56]; // opposition back-line y lanes
   const keyframes = points.map((pt, i) => {
-    const react = clamp01((B[i]!.x - 80) / 36); // 0 until the final third, then ramps
-    const keeper: P = { x: lerp(119, 116.5, react), y: lerp(40, shotLoc.y, react) };
-    const mark = scorerTrack[i]!; // the defender marks the striker, goal-side
-    const defender: P = { x: mark.x + 3.2, y: mark.y + 3 };
+    const b = B[i]!;
+    const actors: Record<string, { x: number; y: number }> = {};
+    for (let d = 0; d < POOL; d++) {
+      const id = d === scorerDot ? "scorer" : d === assistDot ? "assist" : `atk${d}`;
+      actors[id] = pt2(posOnTrack(stations[d]!, i));
+    }
+    // keeper holds the line, sliding across once the ball enters the final third
+    const react = clamp01((b.x - 80) / 36);
+    actors.keeper = pt2({ x: lerp(119, 116.5, react), y: lerp(40, shotLoc.y, react) });
+    // a back line that retreats just goal-side of the ball and shifts toward it
+    const lineX = Math.max(b.x + 6, 80);
+    DEF_LANES.forEach((laneY, k) => {
+      actors[`def${k}`] = pt2({ x: lineX + (k - 1) * 3, y: lerp(laneY, b.y, 0.28) });
+    });
 
     return {
       t: Math.round((i / n) * 100) / 100,
       ball: { x: pt.p[0], y: pt.p[1] },
-      actors: {
-        scorer: pt2(scorerTrack[i]!),
-        assist: pt2(assistTrack[i]!),
-        keeper: pt2(keeper),
-        defender: pt2(defender),
-      },
+      actors,
       ...(pt.event ? { event: pt.event } : {}),
     };
   });
 
+  const attackerActors = Array.from({ length: POOL }, (_, d) => ({
+    slotId: d === scorerDot ? "scorer" : d === assistDot ? "assist" : `atk${d}`,
+    team: "home",
+    role: d === scorerDot ? "scorer" : d === assistDot ? "assist" : "carrier",
+  }));
   const playScript = {
     version: 1,
     goalType: "open_play",
     durationMs: 6000,
     attackingSide: "home",
     actors: [
-      { slotId: "assist", team: "home", role: "assist" },
-      { slotId: "scorer", team: "home", role: "scorer" },
-      { slotId: "defender", team: "away", role: "defender" },
+      ...attackerActors,
       { slotId: "keeper", team: "away", role: "keeper" },
+      ...DEF_LANES.map((_, k) => ({ slotId: `def${k}`, team: "away", role: "defender" })),
     ],
     keyframes,
   };

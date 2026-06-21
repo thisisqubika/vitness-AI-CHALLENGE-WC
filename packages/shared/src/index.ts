@@ -5,6 +5,7 @@ export * from "./match-event.ts";
 export * from "./match-data-provider.ts";
 export * from "./replay-clock.ts";
 export * from "./play-sampler.ts";
+export * from "./densify-play.ts";
 export * from "./trivia.ts";
 export * from "./sticker.ts";
 export * from "./compose-play.ts";
