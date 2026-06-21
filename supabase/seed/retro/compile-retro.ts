@@ -113,17 +113,57 @@ function buildJugada(ev: SbEvent[], cfg: GoalCfg) {
   points.push({ p: [120, shot.location![1]], event: "goal" });
 
   const n = points.length - 1;
-  const keyframes = points.map((pt, i) => ({
-    t: Math.round((i / n) * 100) / 100,
-    ball: { x: pt.p[0], y: pt.p[1] },
-    actors: {
-      scorer: { x: shot.location![0] - 4, y: shot.location![1] },
-      assist: { x: keyPass?.location?.[0] ?? 99, y: keyPass?.location?.[1] ?? 55 },
-      keeper: { x: 119, y: 40 },
-      defender: { x: shot.location![0] + 2, y: shot.location![1] + 4 },
-    },
-    ...(pt.event ? { event: pt.event } : {}),
-  }));
+  // The ball polyline is real; the four actor dots are SYNTHESIZED so the
+  // reconstruction reads as live football rather than four frozen markers
+  // (StatsBomb 360 only gives a single freeze-frame, so we animate plausibly):
+  //   • assist  — carries the ball through the build-up, then holds where it
+  //               played the key pass.
+  //   • scorer  — runs in to meet the ball at the reception, carries it to the
+  //               shot, then stays at the strike point as the ball hits the net.
+  //   • keeper  — slides off the line, tracking the ball toward the strike.
+  //   • defender— chases the ball a few yards goal-side.
+  const clamp = (v: number, max: number) => Math.max(0.5, Math.min(max - 0.5, v));
+  const lerp = (a: number, b: number, f: number) => a + (b - a) * f;
+  const pt2 = (x: number, y: number) => ({ x: Math.round(clamp(x, 120) * 10) / 10, y: Math.round(clamp(y, 80) * 10) / 10 });
+  const ballAt = (i: number) => ({ x: points[i]!.p[0], y: points[i]!.p[1] });
+
+  const shotIdx = points.findIndex((p) => p.event === "shot");
+  let kpIdx = 0;
+  for (let i = 0; i < shotIdx; i++) if (points[i]!.event === "pass") kpIdx = i;
+  kpIdx = Math.max(1, Math.min(kpIdx || Math.floor(shotIdx * 0.6), shotIdx - 1));
+  const shotLoc = { x: shot.location![0], y: shot.location![1] };
+  const recv = ballAt(kpIdx); // where the scorer receives the key pass
+  const scorerStart = { x: recv.x - 13, y: recv.y + 10 }; // off-ball run origin
+  const passSpot = ballAt(Math.max(0, kpIdx - 1)); // where the assist plays it
+
+  const keyframes = points.map((pt, i) => {
+    const b = ballAt(i);
+    const prog = i / n;
+
+    const scorer =
+      i <= kpIdx
+        ? { x: lerp(scorerStart.x, recv.x, i / kpIdx), y: lerp(scorerStart.y, recv.y, i / kpIdx) }
+        : i < shotIdx
+          ? b // carries to the shot
+          : shotLoc; // strikes and stays
+
+    const assist = i < kpIdx ? b : passSpot;
+
+    const keeper = { x: lerp(119, 116.5, Math.min(1, prog * 1.2)), y: lerp(40, shotLoc.y, Math.min(1, prog * 1.3)) };
+    const defender = { x: b.x + 3.5, y: b.y + 3.5 };
+
+    return {
+      t: Math.round((i / n) * 100) / 100,
+      ball: { x: pt.p[0], y: pt.p[1] },
+      actors: {
+        scorer: pt2(scorer.x, scorer.y),
+        assist: pt2(assist.x, assist.y),
+        keeper: pt2(keeper.x, keeper.y),
+        defender: pt2(defender.x, defender.y),
+      },
+      ...(pt.event ? { event: pt.event } : {}),
+    };
+  });
 
   const playScript = {
     version: 1,
