@@ -18,7 +18,7 @@ import Svg, { Polyline } from "react-native-svg";
 import { type StickerCard as Card, RARITY_COLOR } from "@vitness/shared";
 
 import { ThemedText } from "@/components/themed-text";
-import { Spacing } from "@/constants/theme";
+import { Spacing, WebHeaderInset } from "@/constants/theme";
 import { supabase } from "@/lib/supabase";
 import { GoalCelebration } from "./goal-animation";
 import { StickerCard } from "./sticker-card";
@@ -372,7 +372,10 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.7)",
     alignItems: "center",
     justifyContent: "center",
-    padding: Spacing.three,
+    paddingHorizontal: Spacing.three,
+    paddingBottom: Spacing.three,
+    // Clear the fixed web top-nav so the overlay sits below it (never under it).
+    paddingTop: WebHeaderInset + Spacing.three,
   },
   sheet: { backgroundColor: "#111316", borderRadius: Spacing.four, padding: Spacing.four, gap: Spacing.three, alignItems: "center" },
   title: { color: "#ffffff" },

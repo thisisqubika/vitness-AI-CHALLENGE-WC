@@ -3,7 +3,7 @@ import { Pressable, ScrollView, StyleSheet, View, useWindowDimensions } from "re
 import type { PlayScript, TriviaResult } from "@vitness/shared";
 
 import { ThemedText } from "@/components/themed-text";
-import { Brand, Spacing } from "@/constants/theme";
+import { Brand, Spacing, WebHeaderInset } from "@/constants/theme";
 import { useJugadaTrivia } from "@/hooks/use-jugada-trivia";
 import { GoalCelebration } from "@/components/sticker/goal-animation";
 import JugadaCanvas, { type Kit } from "./jugada-canvas";
@@ -86,7 +86,7 @@ export function JugadaTrivia({
 
   return (
     <View style={styles.backdrop}>
-      <View style={[styles.sheet, { maxHeight: screenH - Spacing.four * 2 }]}>
+      <View style={[styles.sheet, { maxHeight: screenH - WebHeaderInset - Spacing.four * 2 }]}>
         {/* Header */}
         <View style={styles.header}>
           <View>
@@ -324,7 +324,10 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.78)",
     alignItems: "center",
     justifyContent: "center",
-    padding: Spacing.three,
+    paddingHorizontal: Spacing.three,
+    paddingBottom: Spacing.three,
+    // Clear the fixed web top-nav so the modal (and its ✕) sits below it.
+    paddingTop: WebHeaderInset + Spacing.three,
   },
   sheet: {
     backgroundColor: "#101216",
