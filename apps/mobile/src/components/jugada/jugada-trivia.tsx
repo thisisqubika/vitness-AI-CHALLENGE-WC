@@ -58,8 +58,12 @@ export function JugadaTrivia({
   const [celebrating, setCelebrating] = useState(false);
   const [celebrated, setCelebrated] = useState(false);
 
-  const width = Math.min(screenW - Spacing.three * 2, 540);
+  // Side-by-side (pitch | questions) on wide web; stacked on phones.
+  const isWide = screenW >= 760;
+  const width = isWide ? 380 : Math.min(screenW - Spacing.three * 2, 540);
   const height = Math.round(width * PITCH_RATIO);
+  const qWidth = isWide ? 360 : width;
+  const contentWidth = isWide ? width + qWidth + Spacing.three : width;
 
   const slots = challenge?.distractors ?? [];
   const answeredCount = slots.filter((s) => answers[s.slotId] !== undefined).length;
@@ -88,7 +92,7 @@ export function JugadaTrivia({
     <View style={styles.backdrop}>
       <View style={[styles.sheet, { maxHeight: screenH - WebHeaderInset - Spacing.four * 2 }]}>
         {/* Header */}
-        <View style={styles.header}>
+        <View style={[styles.header, { width: contentWidth }]}>
           <View>
             <ThemedText type="smallBold" style={styles.kicker}>
               LA JUGADA · ¿VISTE?
@@ -104,6 +108,7 @@ export function JugadaTrivia({
           </Pressable>
         </View>
 
+        <View style={[styles.main, isWide && styles.mainRow]}>
         {/* Pitch */}
         <View style={[styles.canvasWrap, { width, height }]}>
           <JugadaCanvas
@@ -131,19 +136,9 @@ export function JugadaTrivia({
           </Pressable>
         </View>
 
-        {celebrating && (
-          <GoalCelebration
-            onDone={() => {
-              setCelebrating(false);
-              setCelebrated(true);
-              setWatched(true);
-            }}
-          />
-        )}
-
         <ScrollView
           ref={scrollRef}
-          style={[{ width }, styles.scroll]}
+          style={[{ width: qWidth }, isWide ? { height } : styles.scroll]}
           contentContainerStyle={styles.body}
           showsVerticalScrollIndicator={false}>
           {loading ? (
@@ -237,10 +232,21 @@ export function JugadaTrivia({
             </>
           )}
         </ScrollView>
+        </View>
+
+        {celebrating && (
+          <GoalCelebration
+            onDone={() => {
+              setCelebrating(false);
+              setCelebrated(true);
+              setWatched(true);
+            }}
+          />
+        )}
 
         {/* Sticky action bar — always visible at the bottom of the sheet. */}
         {challenge && showQuestions ? (
-          <View style={[styles.footer, { width }]}>
+          <View style={[styles.footer, { width: contentWidth }]}>
             {result ? (
               <Pressable style={styles.doneBtn} onPress={onClose}>
                 <ThemedText type="default" style={styles.doneText}>
@@ -362,6 +368,8 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255,255,255,0.2)",
   },
   replayText: { color: "#ffffff", fontWeight: "600" },
+  main: { flexShrink: 1, alignSelf: "stretch" },
+  mainRow: { flexDirection: "row", gap: Spacing.three, alignItems: "stretch" },
   scroll: { flexShrink: 1 },
   body: { gap: Spacing.three, paddingTop: Spacing.three, paddingBottom: Spacing.two },
   footer: {
