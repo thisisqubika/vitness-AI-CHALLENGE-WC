@@ -34,7 +34,7 @@ interface SbEvent {
   player?: { name: string };
   location?: [number, number];
   pass?: { end_location?: [number, number]; key_pass_id?: string };
-  shot?: { outcome?: { name: string }; key_pass_id?: string; body_part?: { name: string } };
+  shot?: { outcome?: { name: string }; key_pass_id?: string; body_part?: { name: string }; end_location?: number[] };
 }
 
 async function loadEvents(matchId: number): Promise<SbEvent[]> {
@@ -250,9 +250,14 @@ function buildJugada(ev: SbEvent[], byFF: Map<string, FF[]>, cfg: GoalCfg) {
     }
     return { ball: { x: e.location![0], y: e.location![1] }, ev: tag(e.type.name), home, away, hgk, agk, actorHome };
   });
-  // Final keyframe: the ball crosses the line; players hold their last spot.
+  // Final keyframe: the ball crosses the line INTO the net. Use the shot's real
+  // end_location (where the ball actually finished) rather than the shooter's y —
+  // a goal from a wide angle ended near the centre of the mouth, not out by the
+  // post. Clamp to the goal mouth (y 36–44) as a safety net.
+  const goalEnd = shot.shot?.end_location;
+  const goalY = goalEnd && typeof goalEnd[1] === "number" ? cl(goalEnd[1], 36.5, 43.5) : 40;
   const tail = snaps[snaps.length - 1];
-  snaps.push({ ball: { x: 120, y: shotLoc.y }, ev: "goal", home: [], away: [], hgk: tail?.hgk, agk: tail?.agk });
+  snaps.push({ ball: { x: 120, y: goalY }, ev: "goal", home: [], away: [], hgk: tail?.hgk, agk: tail?.agk });
   const K = snaps.length;
 
   // Stitch the snapshots into tracks; cap each side to eleven (most-seen win, but
@@ -356,6 +361,26 @@ function buildJugada(ev: SbEvent[], byFF: Map<string, FF[]>, cfg: GoalCfg) {
       ...(s.ev ? { event: s.ev } : {}),
     };
   });
+
+  // The ball is at the acting player's feet in every source event, but the
+  // stitched anonymous tracks don't always put a dot there. Snap the nearest
+  // attacker exactly onto the ball each keyframe so the carrier visibly has it.
+  // The final "goal" frame is left alone — the ball is already in the net.
+  const homeSlotIds = homeTracks.map((_, k) => homeId(k));
+  for (const kf of keyframes) {
+    if (kf.event === "goal" || homeSlotIds.length === 0) continue;
+    let best = homeSlotIds[0]!;
+    let bd = Infinity;
+    for (const sid of homeSlotIds) {
+      const p = kf.actors[sid]!;
+      const dd = Math.hypot(p.x - kf.ball.x, p.y - kf.ball.y);
+      if (dd < bd) {
+        bd = dd;
+        best = sid;
+      }
+    }
+    kf.actors[best] = { x: kf.ball.x, y: kf.ball.y };
+  }
 
   const playScript = {
     version: 1,

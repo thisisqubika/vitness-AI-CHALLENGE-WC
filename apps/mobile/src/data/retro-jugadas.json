@@ -16,7 +16,7 @@
     "playScript": {
       "version": 1,
       "goalType": "open_play",
-      "durationMs": 16400,
+      "durationMs": 16800,
       "attackingSide": "home",
       "actors": [
         {
@@ -177,8 +177,8 @@
               "y": 55.7
             },
             "h9": {
-              "x": 34.4,
-              "y": 75.4
+              "x": 25.9,
+              "y": 71.8
             },
             "hgk": {
               "x": 5.9,
@@ -232,7 +232,7 @@
           "event": "pass"
         },
         {
-          "t": 0.129,
+          "t": 0.127,
           "ball": {
             "x": 41.8,
             "y": 59
@@ -330,7 +330,7 @@
           "event": "pass"
         },
         {
-          "t": 0.351,
+          "t": 0.343,
           "ball": {
             "x": 53.1,
             "y": 61.8
@@ -428,7 +428,7 @@
           "event": "carry"
         },
         {
-          "t": 0.357,
+          "t": 0.349,
           "ball": {
             "x": 52.9,
             "y": 61.8
@@ -526,7 +526,7 @@
           "event": "pass"
         },
         {
-          "t": 0.576,
+          "t": 0.564,
           "ball": {
             "x": 62.5,
             "y": 68.2
@@ -624,7 +624,7 @@
           "event": "carry"
         },
         {
-          "t": 0.583,
+          "t": 0.57,
           "ball": {
             "x": 63.2,
             "y": 68.2
@@ -722,7 +722,7 @@
           "event": "pass"
         },
         {
-          "t": 0.827,
+          "t": 0.808,
           "ball": {
             "x": 99.3,
             "y": 54.9
@@ -820,7 +820,7 @@
           "event": "pass"
         },
         {
-          "t": 0.958,
+          "t": 0.937,
           "ball": {
             "x": 111.8,
             "y": 32.1
@@ -921,7 +921,7 @@
           "t": 1,
           "ball": {
             "x": 120,
-            "y": 32.1
+            "y": 41.7
           },
           "actors": {
             "scorer": {
@@ -1024,20 +1024,20 @@
         "prompt": "Who finished the move?",
         "options": [
           {
-            "id": "arg-19",
-            "label": "Nicolás Otamendi"
+            "id": "arg-18",
+            "label": "Guido Rodríguez"
           },
           {
             "id": "arg-11",
             "label": "Ángel Di María"
           },
           {
-            "id": "arg-3",
-            "label": "Nicolás Tagliafico"
+            "id": "arg-5",
+            "label": "Leandro Paredes"
           },
           {
-            "id": "arg-26",
-            "label": "Nahuel Molina"
+            "id": "arg-22",
+            "label": "Lautaro Martínez"
           }
         ]
       },
@@ -1047,20 +1047,20 @@
         "prompt": "Who provided the assist?",
         "options": [
           {
-            "id": "arg-7",
-            "label": "Rodrigo De Paul"
+            "id": "arg-21",
+            "label": "Paulo Dybala"
           },
           {
             "id": "arg-20",
             "label": "Alexis Mac Allister"
           },
           {
-            "id": "arg-5",
-            "label": "Leandro Paredes"
+            "id": "arg-13",
+            "label": "Cristian Romero"
           },
           {
-            "id": "arg-19",
-            "label": "Nicolás Otamendi"
+            "id": "arg-25",
+            "label": "Lisandro Martínez"
           }
         ]
       },
@@ -1107,7 +1107,7 @@
     "playScript": {
       "version": 1,
       "goalType": "open_play",
-      "durationMs": 16900,
+      "durationMs": 17000,
       "attackingSide": "home",
       "actors": [
         {
@@ -1420,7 +1420,7 @@
           "event": "pass"
         },
         {
-          "t": 0.338,
+          "t": 0.337,
           "ball": {
             "x": 94.2,
             "y": 56.4
@@ -1518,7 +1518,7 @@
           "event": "pass"
         },
         {
-          "t": 0.409,
+          "t": 0.407,
           "ball": {
             "x": 91.2,
             "y": 58.8
@@ -1616,7 +1616,7 @@
           "event": "carry"
         },
         {
-          "t": 0.415,
+          "t": 0.414,
           "ball": {
             "x": 91.2,
             "y": 58.8
@@ -1714,7 +1714,7 @@
           "event": "pass"
         },
         {
-          "t": 0.605,
+          "t": 0.603,
           "ball": {
             "x": 95.4,
             "y": 49.4
@@ -1812,7 +1812,7 @@
           "event": "carry"
         },
         {
-          "t": 0.611,
+          "t": 0.609,
           "ball": {
             "x": 95.4,
             "y": 49.4
@@ -1910,7 +1910,7 @@
           "event": "pass"
         },
         {
-          "t": 0.903,
+          "t": 0.9,
           "ball": {
             "x": 109.3,
             "y": 56.9
@@ -2008,7 +2008,7 @@
           "event": "carry"
         },
         {
-          "t": 0.938,
+          "t": 0.935,
           "ball": {
             "x": 114.4,
             "y": 52
@@ -2106,7 +2106,7 @@
           "event": "shot"
         },
         {
-          "t": 0.983,
+          "t": 0.98,
           "ball": {
             "x": 116.6,
             "y": 43
@@ -2207,7 +2207,7 @@
           "t": 1,
           "ball": {
             "x": 120,
-            "y": 43
+            "y": 40.9
           },
           "actors": {
             "scorer": {
@@ -2310,20 +2310,20 @@
         "prompt": "Who finished the move?",
         "options": [
           {
-            "id": "arg-19",
-            "label": "Nicolás Otamendi"
+            "id": "arg-18",
+            "label": "Guido Rodríguez"
           },
           {
             "id": "arg-10",
             "label": "Lionel Messi"
           },
           {
-            "id": "arg-3",
-            "label": "Nicolás Tagliafico"
+            "id": "arg-5",
+            "label": "Leandro Paredes"
           },
           {
-            "id": "arg-26",
-            "label": "Nahuel Molina"
+            "id": "arg-22",
+            "label": "Lautaro Martínez"
           }
         ]
       },
@@ -2381,7 +2381,8 @@
         {
           "slotId": "assist",
           "team": "home",
-          "role": "assist"
+          "role": "assist",
+          "shirtNumber": 15
         },
         {
           "slotId": "h2",
@@ -2682,7 +2683,7 @@
           "event": "pass"
         },
         {
-          "t": 0.076,
+          "t": 0.075,
           "ball": {
             "x": 66.8,
             "y": 2.3
@@ -2878,7 +2879,7 @@
           "event": "pass"
         },
         {
-          "t": 0.155,
+          "t": 0.154,
           "ball": {
             "x": 54.6,
             "y": 5.5
@@ -2976,7 +2977,7 @@
           "event": "carry"
         },
         {
-          "t": 0.157,
+          "t": 0.156,
           "ball": {
             "x": 54.6,
             "y": 5.5
@@ -3074,7 +3075,7 @@
           "event": "pass"
         },
         {
-          "t": 0.268,
+          "t": 0.267,
           "ball": {
             "x": 44.1,
             "y": 23.7
@@ -3172,7 +3173,7 @@
           "event": "carry"
         },
         {
-          "t": 0.334,
+          "t": 0.333,
           "ball": {
             "x": 20.1,
             "y": 52.6
@@ -3207,8 +3208,8 @@
               "y": 17.4
             },
             "h7": {
-              "x": 55.2,
-              "y": 42.8
+              "x": 20.1,
+              "y": 52.6
             },
             "h8": {
               "x": 100.5,
@@ -3270,7 +3271,7 @@
           "event": "pass"
         },
         {
-          "t": 0.453,
+          "t": 0.451,
           "ball": {
             "x": 81.1,
             "y": 23.7
@@ -3368,7 +3369,7 @@
           "event": "pass"
         },
         {
-          "t": 0.674,
+          "t": 0.671,
           "ball": {
             "x": 46.5,
             "y": 47.2
@@ -3466,7 +3467,7 @@
           "event": "carry"
         },
         {
-          "t": 0.754,
+          "t": 0.75,
           "ball": {
             "x": 84.8,
             "y": 71.2
@@ -3481,8 +3482,8 @@
               "y": 35
             },
             "h2": {
-              "x": 75.1,
-              "y": 58.1
+              "x": 84.8,
+              "y": 71.2
             },
             "h3": {
               "x": 73.8,
@@ -3564,7 +3565,7 @@
           "event": "pass"
         },
         {
-          "t": 0.829,
+          "t": 0.825,
           "ball": {
             "x": 78.8,
             "y": 58.3
@@ -3662,7 +3663,7 @@
           "event": "carry"
         },
         {
-          "t": 0.837,
+          "t": 0.832,
           "ball": {
             "x": 79.2,
             "y": 54.1
@@ -3760,7 +3761,7 @@
           "event": "pass"
         },
         {
-          "t": 0.895,
+          "t": 0.89,
           "ball": {
             "x": 93.1,
             "y": 24.1
@@ -3771,8 +3772,8 @@
               "y": 29.7
             },
             "assist": {
-              "x": 90.5,
-              "y": 35.3
+              "x": 93.1,
+              "y": 24.1
             },
             "h2": {
               "x": 78.4,
@@ -3858,7 +3859,7 @@
           "event": "pass"
         },
         {
-          "t": 0.96,
+          "t": 0.955,
           "ball": {
             "x": 94.8,
             "y": 36.3
@@ -3956,7 +3957,7 @@
           "event": "carry"
         },
         {
-          "t": 0.962,
+          "t": 0.957,
           "ball": {
             "x": 94.8,
             "y": 36.3
@@ -4054,7 +4055,7 @@
           "event": "pass"
         },
         {
-          "t": 0.979,
+          "t": 0.973,
           "ball": {
             "x": 104.8,
             "y": 30.1
@@ -4155,7 +4156,7 @@
           "t": 1,
           "ball": {
             "x": 120,
-            "y": 30.1
+            "y": 41.5
           },
           "actors": {
             "scorer": {
@@ -4258,20 +4259,20 @@
         "prompt": "Who finished the move?",
         "options": [
           {
-            "id": "fra-25",
-            "label": "Eduardo Camavinga"
+            "id": "fra-13",
+            "label": "N'Golo Kanté"
           },
           {
             "id": "fra-10",
             "label": "Kylian Mbappé"
           },
           {
-            "id": "fra-8",
-            "label": "Aurélien Tchouaméni"
+            "id": "fra-25",
+            "label": "Eduardo Camavinga"
           },
           {
-            "id": "fra-11",
-            "label": "Ousmane Dembélé"
+            "id": "fra-15",
+            "label": "Marcus Thuram"
           }
         ]
       },
@@ -4281,20 +4282,20 @@
         "prompt": "Who provided the assist?",
         "options": [
           {
-            "id": "fra-8",
-            "label": "Aurélien Tchouaméni"
+            "id": "fra-26",
+            "label": "Michael Olise"
           },
           {
-            "id": "name-correct",
+            "id": "fra-15",
             "label": "Marcus Thuram"
           },
           {
-            "id": "fra-10",
-            "label": "Kylian Mbappé"
+            "id": "fra-17",
+            "label": "William Saliba"
           },
           {
-            "id": "fra-11",
-            "label": "Ousmane Dembélé"
+            "id": "fra-23",
+            "label": "Brice Samba"
           }
         ]
       },
@@ -4321,7 +4322,7 @@
     "answerKey": {
       "scorer": "fra-10",
       "bodypart": "correct",
-      "assist": "name-correct"
+      "assist": "fra-15"
     }
   },
   {
@@ -4492,8 +4493,8 @@
               "y": 70.3
             },
             "h8": {
-              "x": 25.2,
-              "y": 54.2
+              "x": 29.9,
+              "y": 80
             },
             "h9": {
               "x": 26.6,
@@ -4586,8 +4587,8 @@
               "y": 24.1
             },
             "h7": {
-              "x": 58.1,
-              "y": 70.3
+              "x": 44.3,
+              "y": 75.9
             },
             "h8": {
               "x": 26.6,
@@ -4774,8 +4775,8 @@
               "y": 50.2
             },
             "h5": {
-              "x": 59.3,
-              "y": 18.4
+              "x": 45.8,
+              "y": 25.8
             },
             "h6": {
               "x": 78.7,
@@ -4845,7 +4846,7 @@
           "event": "carry"
         },
         {
-          "t": 0.605,
+          "t": 0.604,
           "ball": {
             "x": 83.2,
             "y": 7.9
@@ -5041,7 +5042,7 @@
           "event": "pass"
         },
         {
-          "t": 0.665,
+          "t": 0.664,
           "ball": {
             "x": 77.6,
             "y": 13.8
@@ -5237,7 +5238,7 @@
           "event": "pass"
         },
         {
-          "t": 0.796,
+          "t": 0.795,
           "ball": {
             "x": 100.4,
             "y": 10.7
@@ -5531,7 +5532,7 @@
           "event": "carry"
         },
         {
-          "t": 0.975,
+          "t": 0.974,
           "ball": {
             "x": 107.1,
             "y": 39.6
@@ -5632,7 +5633,7 @@
           "t": 1,
           "ball": {
             "x": 120,
-            "y": 39.6
+            "y": 37
           },
           "actors": {
             "scorer": {
@@ -5735,20 +5736,20 @@
         "prompt": "Who finished the move?",
         "options": [
           {
-            "id": "bra-8",
-            "label": "Lucas Paquetá"
+            "id": "bra-2",
+            "label": "Danilo"
           },
           {
             "id": "name-correct",
             "label": "Richarlison de Andrade"
           },
           {
-            "id": "bra-5",
-            "label": "Bruno Guimarães"
+            "id": "bra-14",
+            "label": "Beraldo"
           },
           {
-            "id": "bra-10",
-            "label": "Rodrygo"
+            "id": "bra-20",
+            "label": "Gabriel Martinelli"
           }
         ]
       },
@@ -5758,20 +5759,20 @@
         "prompt": "Who provided the assist?",
         "options": [
           {
-            "id": "bra-5",
-            "label": "Bruno Guimarães"
+            "id": "bra-21",
+            "label": "Matheus Cunha"
           },
           {
             "id": "bra-11",
             "label": "Vinícius Júnior"
           },
           {
-            "id": "bra-8",
-            "label": "Lucas Paquetá"
+            "id": "bra-3",
+            "label": "Marquinhos"
           },
           {
-            "id": "bra-4",
-            "label": "Gabriel Magalhães"
+            "id": "bra-14",
+            "label": "Beraldo"
           }
         ]
       },
@@ -6045,8 +6046,8 @@
               "y": 46.6
             },
             "assist": {
-              "x": 64.9,
-              "y": 73.1
+              "x": 64.8,
+              "y": 74.8
             },
             "h2": {
               "x": 72.5,
@@ -6328,7 +6329,7 @@
           "event": "pass"
         },
         {
-          "t": 0.492,
+          "t": 0.491,
           "ball": {
             "x": 81,
             "y": 58.2
@@ -6426,7 +6427,7 @@
           "event": "carry"
         },
         {
-          "t": 0.658,
+          "t": 0.657,
           "ball": {
             "x": 90.6,
             "y": 76
@@ -6524,7 +6525,7 @@
           "event": "carry"
         },
         {
-          "t": 0.686,
+          "t": 0.685,
           "ball": {
             "x": 97.4,
             "y": 68.5
@@ -6622,7 +6623,7 @@
           "event": "pass"
         },
         {
-          "t": 0.942,
+          "t": 0.94,
           "ball": {
             "x": 93.3,
             "y": 37.6
@@ -6720,7 +6721,7 @@
           "event": "carry"
         },
         {
-          "t": 0.945,
+          "t": 0.944,
           "ball": {
             "x": 94.9,
             "y": 37.4
@@ -6821,7 +6822,7 @@
           "t": 1,
           "ball": {
             "x": 120,
-            "y": 37.4
+            "y": 43.5
           },
           "actors": {
             "scorer": {
@@ -6924,20 +6925,20 @@
         "prompt": "Who finished the move?",
         "options": [
           {
-            "id": "arg-19",
-            "label": "Nicolás Otamendi"
+            "id": "arg-18",
+            "label": "Guido Rodríguez"
           },
           {
             "id": "arg-10",
             "label": "Lionel Messi"
           },
           {
-            "id": "arg-3",
-            "label": "Nicolás Tagliafico"
+            "id": "arg-5",
+            "label": "Leandro Paredes"
           },
           {
-            "id": "arg-26",
-            "label": "Nahuel Molina"
+            "id": "arg-22",
+            "label": "Lautaro Martínez"
           }
         ]
       },
@@ -6947,20 +6948,20 @@
         "prompt": "Who provided the assist?",
         "options": [
           {
-            "id": "arg-7",
-            "label": "Rodrigo De Paul"
+            "id": "arg-21",
+            "label": "Paulo Dybala"
           },
           {
             "id": "arg-11",
             "label": "Ángel Di María"
           },
           {
-            "id": "arg-5",
-            "label": "Leandro Paredes"
+            "id": "arg-13",
+            "label": "Cristian Romero"
           },
           {
-            "id": "arg-19",
-            "label": "Nicolás Otamendi"
+            "id": "arg-25",
+            "label": "Lisandro Martínez"
           }
         ]
       },
@@ -7217,7 +7218,7 @@
           "event": "pass"
         },
         {
-          "t": 0.126,
+          "t": 0.123,
           "ball": {
             "x": 56.7,
             "y": 13.2
@@ -7315,7 +7316,7 @@
           "event": "carry"
         },
         {
-          "t": 0.13,
+          "t": 0.127,
           "ball": {
             "x": 55.9,
             "y": 13
@@ -7413,7 +7414,7 @@
           "event": "pass"
         },
         {
-          "t": 0.167,
+          "t": 0.162,
           "ball": {
             "x": 47.1,
             "y": 14.1
@@ -7511,7 +7512,7 @@
           "event": "pass"
         },
         {
-          "t": 0.31,
+          "t": 0.302,
           "ball": {
             "x": 56.7,
             "y": 20.7
@@ -7609,7 +7610,7 @@
           "event": "carry"
         },
         {
-          "t": 0.321,
+          "t": 0.313,
           "ball": {
             "x": 54.4,
             "y": 22.2
@@ -7707,7 +7708,7 @@
           "event": "pass"
         },
         {
-          "t": 0.353,
+          "t": 0.344,
           "ball": {
             "x": 58.9,
             "y": 28.6
@@ -7805,7 +7806,7 @@
           "event": "pass"
         },
         {
-          "t": 0.393,
+          "t": 0.382,
           "ball": {
             "x": 55.7,
             "y": 28.2
@@ -7903,7 +7904,7 @@
           "event": "carry"
         },
         {
-          "t": 0.437,
+          "t": 0.426,
           "ball": {
             "x": 63.1,
             "y": 36.1
@@ -8001,7 +8002,7 @@
           "event": "pass"
         },
         {
-          "t": 0.63,
+          "t": 0.613,
           "ball": {
             "x": 76.6,
             "y": 28.2
@@ -8099,7 +8100,7 @@
           "event": "carry"
         },
         {
-          "t": 0.657,
+          "t": 0.639,
           "ball": {
             "x": 82.2,
             "y": 24.6
@@ -8197,7 +8198,7 @@
           "event": "pass"
         },
         {
-          "t": 0.951,
+          "t": 0.926,
           "ball": {
             "x": 106.1,
             "y": 24.1
@@ -8295,7 +8296,7 @@
           "event": "carry"
         },
         {
-          "t": 0.955,
+          "t": 0.929,
           "ball": {
             "x": 106.2,
             "y": 25.2
@@ -8396,7 +8397,7 @@
           "t": 1,
           "ball": {
             "x": 120,
-            "y": 25.2
+            "y": 42.6
           },
           "actors": {
             "scorer": {
@@ -8499,20 +8500,20 @@
         "prompt": "Who finished the move?",
         "options": [
           {
-            "id": "fra-25",
-            "label": "Eduardo Camavinga"
+            "id": "fra-13",
+            "label": "N'Golo Kanté"
           },
           {
             "id": "fra-10",
             "label": "Kylian Mbappé"
           },
           {
-            "id": "fra-8",
-            "label": "Aurélien Tchouaméni"
+            "id": "fra-25",
+            "label": "Eduardo Camavinga"
           },
           {
-            "id": "fra-11",
-            "label": "Ousmane Dembélé"
+            "id": "fra-15",
+            "label": "Marcus Thuram"
           }
         ]
       },
@@ -8522,20 +8523,20 @@
         "prompt": "Who provided the assist?",
         "options": [
           {
-            "id": "fra-8",
-            "label": "Aurélien Tchouaméni"
+            "id": "fra-26",
+            "label": "Michael Olise"
           },
           {
-            "id": "name-correct",
+            "id": "fra-15",
             "label": "Marcus Thuram"
           },
           {
-            "id": "fra-10",
-            "label": "Kylian Mbappé"
+            "id": "fra-17",
+            "label": "William Saliba"
           },
           {
-            "id": "fra-11",
-            "label": "Ousmane Dembélé"
+            "id": "fra-23",
+            "label": "Brice Samba"
           }
         ]
       },
@@ -8562,7 +8563,7 @@
     "answerKey": {
       "scorer": "fra-10",
       "bodypart": "correct",
-      "assist": "name-correct"
+      "assist": "fra-15"
     }
   }
 ]
