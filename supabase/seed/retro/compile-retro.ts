@@ -181,17 +181,17 @@ interface GoalCfg {
 
 /** The famous goals we reconstruct from real events (StatsBomb match ids). */
 const GOALS: GoalCfg[] = [
-  { providerEventId: "retro-wc2022-final-dimaria", matchId: 3869685, possession: 52, title: "World Cup 2022 final — the team goal", opponent: "France" },
+  { providerEventId: "retro-wc2022-final-dimaria", matchId: 3869685, possession: 52, title: "Final del Mundial 2022 — el gol colectivo", opponent: "France" },
   // 108' Messi extra-time strike (3–2) — the golazo card's historic moment.
-  { providerEventId: "retro-wc2022-final-messi", matchId: 3869685, possession: 228, title: "World Cup 2022 final — Messi's extra-time strike", opponent: "France" },
+  { providerEventId: "retro-wc2022-final-messi", matchId: 3869685, possession: 228, title: "Final del Mundial 2022 — el gol del alargue", opponent: "France" },
   // 80' Mbappé — France's second, the comeback goal (Thuram assist).
-  { providerEventId: "retro-wc2022-final-mbappe", matchId: 3869685, possession: 165, title: "World Cup 2022 final — Mbappé's comeback goal", opponent: "Argentina" },
+  { providerEventId: "retro-wc2022-final-mbappe", matchId: 3869685, possession: 165, title: "Final del Mundial 2022 — el gol de la remontada", opponent: "Argentina" },
   // 73' Richarlison bicycle kick vs Serbia — goal of the tournament.
-  { providerEventId: "retro-wc2022-bra-ser-richarlison", matchId: 3857258, possession: 133, title: "World Cup 2022 — Richarlison's bicycle kick", opponent: "Serbia" },
+  { providerEventId: "retro-wc2022-bra-ser-richarlison", matchId: 3857258, possession: 133, title: "Mundial 2022 — la chilena ante Serbia", opponent: "Serbia" },
   // 64' Messi opens the scoring vs Mexico — the goal that settled Argentina.
-  { providerEventId: "retro-wc2022-arg-mex-messi", matchId: 3857289, possession: 105, title: "World Cup 2022 — Messi unlocks Mexico", opponent: "Mexico" },
+  { providerEventId: "retro-wc2022-arg-mex-messi", matchId: 3857289, possession: 105, title: "Mundial 2022 — el gol que abrió a México", opponent: "Mexico" },
   // 91' Mbappé curls in France's third vs Poland.
-  { providerEventId: "retro-wc2022-fra-pol-mbappe", matchId: 3869152, possession: 143, title: "World Cup 2022 — Mbappé vs Poland", opponent: "Poland" },
+  { providerEventId: "retro-wc2022-fra-pol-mbappe", matchId: 3869152, possession: 143, title: "Mundial 2022 — el golazo ante Polonia", opponent: "Poland" },
 ];
 
 function buildJugada(ev: SbEvent[], byFF: Map<string, FF[]>, cfg: GoalCfg) {

@@ -1,7 +1,7 @@
 [
   {
     "providerEventId": "retro-wc2022-final-dimaria",
-    "title": "World Cup 2022 final — the team goal",
+    "title": "Final del Mundial 2022 — el gol colectivo",
     "playerId": "arg-11",
     "home": {
       "flag": "🇦🇷",
@@ -1092,7 +1092,7 @@
   },
   {
     "providerEventId": "retro-wc2022-final-messi",
-    "title": "World Cup 2022 final — Messi's extra-time strike",
+    "title": "Final del Mundial 2022 — el gol del alargue",
     "playerId": "arg-10",
     "home": {
       "flag": "🇦🇷",
@@ -2354,7 +2354,7 @@
   },
   {
     "providerEventId": "retro-wc2022-final-mbappe",
-    "title": "World Cup 2022 final — Mbappé's comeback goal",
+    "title": "Final del Mundial 2022 — el gol de la remontada",
     "playerId": "fra-10",
     "home": {
       "flag": "🇫🇷",
@@ -4327,7 +4327,7 @@
   },
   {
     "providerEventId": "retro-wc2022-bra-ser-richarlison",
-    "title": "World Cup 2022 — Richarlison's bicycle kick",
+    "title": "Mundial 2022 — la chilena ante Serbia",
     "playerId": null,
     "home": {
       "flag": "🇧🇷",
@@ -5804,7 +5804,7 @@
   },
   {
     "providerEventId": "retro-wc2022-arg-mex-messi",
-    "title": "World Cup 2022 — Messi unlocks Mexico",
+    "title": "Mundial 2022 — el gol que abrió a México",
     "playerId": "arg-10",
     "home": {
       "flag": "🇦🇷",
@@ -6993,7 +6993,7 @@
   },
   {
     "providerEventId": "retro-wc2022-fra-pol-mbappe",
-    "title": "World Cup 2022 — Mbappé vs Poland",
+    "title": "Mundial 2022 — el golazo ante Polonia",
     "playerId": "fra-10",
     "home": {
       "flag": "🇫🇷",
